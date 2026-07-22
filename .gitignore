@@ -1,0 +1,23 @@
+# ---- Variables de entorno y secretos (NUNCA subir a GitHub) ----
+.env
+.env.*
+*.local
+.env.local
+.env.development.local
+.env.production.local
+
+# ---- Dependencias / build (por si más adelante agregas tooling) ----
+node_modules/
+dist/
+build/
+.cache/
+
+# ---- Vercel ----
+.vercel
+
+# ---- Sistema operativo / editores ----
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

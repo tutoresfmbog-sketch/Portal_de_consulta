@@ -1,0 +1,143 @@
+=======================================================================
+  GRUPO DE EQUIDAD EN SALUD — PÁGINA WEB
+  Instrucciones para publicar en GitHub y Vercel
+=======================================================================
+
+Esta carpeta contiene tu sitio web completo, listo para subir. Es un
+sitio ESTÁTICO (solo HTML, CSS, JS, imágenes y fuentes), así que no
+necesita servidor ni compilación.
+
+Estructura:
+  index.html                          -> página principal
+  assets/                             -> logo del grupo
+  unal/css, unal/js, unal/images      -> plantilla institucional UNAL
+  uploads/.../fonts                   -> fuentes Ancizar
+  .gitignore                          -> archivos que NO se suben
+
+-----------------------------------------------------------------------
+  REQUISITOS PREVIOS (una sola vez)
+-----------------------------------------------------------------------
+1. Tener una cuenta en GitHub:  https://github.com
+2. Tener una cuenta en Vercel:  https://vercel.com  (puedes entrar con
+   tu cuenta de GitHub, es lo más cómodo).
+3. Tener Git instalado:         https://git-scm.com/downloads
+   Para comprobarlo, abre una terminal y escribe:  git --version
+
+
+=======================================================================
+  PARTE 1 — SUBIR A GITHUB
+=======================================================================
+
+PASO 1. Crear el repositorio en GitHub
+  - Entra a https://github.com/new
+  - Nombre del repositorio (ej.):  pagina-equidad
+  - Visibilidad: Public o Private (a tu elección).
+  - NO marques "Add a README" ni ".gitignore" (ya los traemos aquí).
+  - Clic en "Create repository". Copia la URL que te muestra, será algo
+    como:  https://github.com/TU-USUARIO/pagina-equidad.git
+
+PASO 2. Abrir una terminal DENTRO de esta carpeta
+  - Descomprime el ZIP en tu computador.
+  - Abre la terminal y navega hasta la carpeta descomprimida, por ej.:
+        cd ruta/a/export-github
+
+PASO 3. Inicializar Git y hacer el primer push
+  Copia y pega estos comandos uno por uno:
+
+        git init
+        git add .
+        git commit -m "Primera version de la pagina de Equidad en Salud"
+        git branch -M main
+        git remote add origin https://github.com/TU-USUARIO/pagina-equidad.git
+        git push -u origin main
+
+  (Reemplaza la URL de "origin" por la de TU repositorio del Paso 1.)
+  Si te pide usuario y contraseña, usa tu usuario de GitHub y un
+  "Personal Access Token" como contraseña (GitHub ya no acepta la
+  contraseña normal). Lo creas en:
+  GitHub > Settings > Developer settings > Personal access tokens.
+
+  ¡Listo! Refresca la página de tu repositorio y verás los archivos.
+
+PASO 4 (opcional). Cambios futuros
+  Cada vez que edites algo, repite:
+        git add .
+        git commit -m "Descripcion del cambio"
+        git push
+
+
+=======================================================================
+  PARTE 2 — PUBLICAR EN VERCEL
+=======================================================================
+
+PASO 1. Importar el proyecto
+  - Entra a https://vercel.com/new
+  - Conecta tu cuenta de GitHub si no lo has hecho.
+  - Busca el repositorio "pagina-equidad" y haz clic en "Import".
+
+PASO 2. Configuración del proyecto
+  - Framework Preset:  selecciona "Other"  (es un sitio estático).
+  - Root Directory:    déjalo en la raíz ( ./ ).
+  - Build Command:     déjalo VACÍO.
+  - Output Directory:  déjalo VACÍO (Vercel sirve index.html directo).
+  - Clic en "Deploy".
+
+PASO 3. Ver tu sitio
+  - En 1-2 minutos Vercel te da una URL pública, por ejemplo:
+        https://pagina-equidad.vercel.app
+  - Cada vez que hagas "git push" a GitHub, Vercel volverá a publicar
+    automáticamente la nueva versión. No tienes que hacer nada más.
+
+
+=======================================================================
+  PARTE 3 — VARIABLES DE ENTORNO Y SECRETOS
+=======================================================================
+
+IMPORTANTE: Esta página, tal como está hoy, es 100% estática y NO usa
+ninguna variable secreta ni clave de API. O sea, por ahora no tienes
+nada que ocultar. Pero si en el futuro agregas, por ejemplo, una clave
+de un mapa, de un formulario o de una base de datos, sigue estas reglas
+para NO exponerla en GitHub:
+
+REGLA DE ORO:
+  - NUNCA escribas claves o contraseñas directamente dentro de
+    index.html o de los archivos .js. Todo lo que subes a GitHub es
+    visible (incluso en repos privados, conviene la buena práctica).
+
+CÓMO HACERLO BIEN:
+
+  a) En tu computador, crea un archivo llamado  .env  con tus claves:
+         MI_CLAVE_API=abc123
+         OTRA_CLAVE=xyz789
+
+  b) Ese archivo .env YA ESTÁ EN .gitignore (incluido en esta carpeta),
+     así que Git lo ignora y NUNCA se sube a GitHub. Verifícalo: al
+     hacer "git status" el archivo .env no debe aparecer en la lista.
+
+  c) Para que tu sitio en producción tenga esas claves, cárgalas en
+     Vercel (NO en el código):
+         - Entra a tu proyecto en vercel.com
+         - Settings > Environment Variables
+         - Agrega cada variable (nombre y valor) y elige el entorno
+           (Production / Preview / Development).
+         - Guarda y vuelve a desplegar ("Redeploy").
+
+  d) NOTA TÉCNICA: en un sitio estático puro (sin framework), el
+     navegador no puede leer variables de entorno por sí solo. Si
+     llegas a necesitar secretos de verdad, lo correcto es usar una
+     "Serverless Function" de Vercel (carpeta /api) que lea la variable
+     con process.env.MI_CLAVE_API y devuelva solo lo necesario al
+     navegador. Así la clave vive en el servidor y nunca llega al
+     código público. Si llegas a ese punto, pídeme ayuda y lo armamos.
+
+
+=======================================================================
+  NOTAS FINALES
+=======================================================================
+- La página carga algunos fondos y el tablero interactivo (Shiny) desde
+  internet (servidores de la UNAL y shinyapps.io). Por eso, para verse
+  completa, el visitante necesita conexión a internet. Esto es normal y
+  no requiere ningún archivo extra.
+- Si algo no carga, revisa que respetaste la estructura de carpetas
+  (unal/, assets/, uploads/) tal cual viene en este ZIP.
+=======================================================================

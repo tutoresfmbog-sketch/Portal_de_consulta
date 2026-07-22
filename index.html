@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=2.5, user-scalable=yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="author" content="Grupo de Equidad en Salud — Facultad de Medicina, UNAL" />
+<meta name="description" content="Grupo de Equidad en Salud de la Facultad de Medicina de la Universidad Nacional de Colombia. Investigación sobre inequidades socioeconómicas en los resultados en salud. Clasificación Minciencias A1." />
+<link rel="icon" href="https://unal.edu.co/typo3conf/ext/unal_skin_default/Resources/Public/images/favicon.ico" type="image/vnd.microsoft.icon" />
+<title>Grupo de Equidad en Salud : Universidad Nacional de Colombia</title>
+
+<!-- ============================================================= -->
+<!-- Cascarón institucional REAL de la UNAL (CSS originales)        -->
+<!-- ============================================================= -->
+<link rel="stylesheet" href="unal/css/bootstrap.min.css" media="all" />
+<link rel="stylesheet" href="unal/css/accesibilidad.css" media="all" />
+<link rel="stylesheet" href="unal/css/frontend.css" media="all" />
+<link rel="stylesheet" href="unal/css/buscador.css" media="all" />
+<link rel="stylesheet" href="unal/css/open-iconic-bootstrap.min.css" media="all" />
+
+<!-- ============================================================= -->
+<!-- Fuentes institucionales Ancizar (para el desarrollo interno)  -->
+<!-- ============================================================= -->
+<style>
+@font-face{font-family:"Ancizar Sans";font-weight:300;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-light-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Sans";font-weight:400;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-regular-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Sans";font-weight:400;font-style:italic;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-regular_italic-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Sans";font-weight:700;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-bold-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Sans";font-weight:800;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-extrabold-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Sans";font-weight:900;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_sans-black-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Serif";font-weight:400;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_serif-regular-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Serif";font-weight:400;font-style:italic;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_serif-regular_italic-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Serif";font-weight:700;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_serif-bold-webfont.woff2") format("woff2");}
+@font-face{font-family:"Ancizar Serif";font-weight:800;font-style:normal;font-display:swap;
+  src:url("uploads/Plantilla-Pagina-Web/fonts/ancizar_serif-extrabold-webfont.woff2") format("woff2");}
+</style>
+
+<!-- ============================================================= -->
+<!-- Estilos del DESARROLLO (Grupo de Equidad) — scopeados a       -->
+<!-- #contenido-equidad para no alterar el cascarón institucional  -->
+<!-- ============================================================= -->
+<style>
+#contenido-equidad{
+  --ink:#262626; --ink-soft:#54585b; --muted:#7a7e80;
+  --paper:#ffffff; --paper-2:#f5f6f3; --paper-3:#eceeea;
+  --line:#e1e4de; --line-strong:#cfd3cc;
+  --accent:#15786b;        /* teal institucional, tomado del logo del grupo */
+  --accent-ink:#0e574e;
+  --accent-soft:#e6f1ef;
+  --earth:#6f9e34;
+  --gold:#b08a1e;
+  --maxw:1180px;
+  font-family:"Ancizar Sans",Arial,Helvetica,sans-serif;
+  color:var(--ink); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+#contenido-equidad *{box-sizing:border-box;}
+#contenido-equidad img{max-width:100%;}
+#contenido-equidad a{color:var(--accent-ink); text-decoration:none;}
+#contenido-equidad a:hover{text-decoration:underline;}
+#contenido-equidad h1,#contenido-equidad h2,#contenido-equidad h3,#contenido-equidad h4{
+  font-family:"Ancizar Serif",Georgia,serif; color:var(--ink); margin:0; line-height:1.15; background:none;}
+#contenido-equidad :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:2px;}
+
+/* -------- Skip link -------- */
+.skip-link{position:absolute; left:-9999px; top:0; z-index:9999; background:#262626; color:#fff;
+  padding:12px 18px; font-weight:700;}
+.skip-link:focus{left:8px; top:8px; text-decoration:none;}
+
+/* Barra de secciones (interna del desarrollo) */
+.eq-secbar{position:sticky; top:0; z-index:60; background:rgba(255,255,255,.94);
+  backdrop-filter:saturate(1.5) blur(8px); border-bottom:1px solid var(--line);
+  margin:0 0 8px; padding:10px 0;}
+.eq-secbar-btn{display:inline-flex; align-items:center; gap:12px; background:#262626; color:#fff;
+  border:0; border-radius:10px; padding:11px 18px; font-family:"Ancizar Sans",sans-serif; font-weight:700;
+  font-size:14.5px; letter-spacing:.02em; cursor:pointer;}
+.eq-secbar-btn:hover{background:var(--accent-ink);}
+.eq-secbar-btn .bars{display:inline-flex; flex-direction:column; gap:3px;}
+.eq-secbar-btn .bars i{width:17px; height:2px; background:#fff; border-radius:2px; transition:.2s;}
+.eq-secbar-btn[aria-expanded="true"] .bars i:nth-child(1){transform:translateY(5px) rotate(45deg);}
+.eq-secbar-btn[aria-expanded="true"] .bars i:nth-child(2){opacity:0;}
+.eq-secbar-btn[aria-expanded="true"] .bars i:nth-child(3){transform:translateY(-5px) rotate(-45deg);}
+.eq-secbar-btn .lbl{font-weight:800;}
+.eq-secbar-btn .cur{padding-left:12px; margin-left:2px; border-left:1px solid rgba(255,255,255,.35);
+  font-weight:600; color:#dfeae8;}
+.eq-secmenu{position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:61;
+  background:#fff; border:1px solid var(--line-strong); border-radius:14px; box-shadow:0 22px 60px rgba(0,0,0,.18);
+  padding:14px; display:grid; grid-template-columns:repeat(4,1fr); gap:6px;
+  opacity:0; visibility:hidden; transform:translateY(-8px); transition:opacity .18s ease, transform .18s ease, visibility .18s;}
+.eq-secmenu.open{opacity:1; visibility:visible; transform:translateY(0);}
+.eq-secmenu a{display:flex; align-items:center; gap:10px; padding:13px 14px; border-radius:9px;
+  font-family:"Ancizar Sans",sans-serif; font-size:14.5px; font-weight:600; color:var(--ink-soft); line-height:1.2;}
+.eq-secmenu a .d{width:6px; height:6px; border-radius:50%; background:var(--line-strong); flex:0 0 auto; transition:.15s;}
+.eq-secmenu a:hover{background:var(--paper-2); color:var(--accent-ink); text-decoration:none;}
+.eq-secmenu a.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:800;}
+.eq-secmenu a.active .d{background:var(--accent); box-shadow:0 0 0 3px rgba(21,120,107,.18);}
+.eq-secmenu-backdrop{position:fixed; inset:0; z-index:55; background:rgba(20,24,22,.18);
+  opacity:0; transition:opacity .18s; pointer-events:none;}
+.eq-secmenu-backdrop.show{opacity:1; pointer-events:auto;}
+
+.eq-content > .eq-hero{margin-top:0;}
+.eq-section{margin-top:64px;}
+.eq-eyebrow{font-family:"Ancizar Sans",sans-serif; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; font-size:12.5px; color:var(--accent); margin:0 0 12px;
+  display:flex; align-items:center; gap:12px;}
+.eq-eyebrow::before{content:""; width:26px; height:2px; background:var(--accent);}
+.eq-h2{font-size:clamp(26px,3.2vw,38px); font-weight:800; letter-spacing:-.01em;}
+.eq-lead{font-size:18px; color:var(--ink-soft); max-width:62ch; margin:14px 0 0;}
+
+/* -------- HERO -------- */
+.eq-hero{background:linear-gradient(180deg,var(--paper-2),#fff); border:1px solid var(--line);
+  border-radius:18px; margin-top:18px; overflow:hidden;}
+.eq-hero .grid{display:grid; grid-template-columns:1.55fr .85fr; gap:40px; align-items:center;
+  padding:48px 48px;}
+.eq-hero .kicker{font-family:"Ancizar Sans",sans-serif; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; font-size:12.5px; color:var(--accent); margin:0 0 16px;}
+.eq-hero h1{font-size:clamp(30px,4.4vw,52px); font-weight:800; letter-spacing:-.02em; line-height:1.04;}
+.eq-hero h1 .en{display:block; color:var(--ink);}
+.eq-hero h1 .es{display:block; color:var(--accent-ink); font-size:.62em; font-weight:700; margin-top:6px;}
+.eq-hero .sub{margin:18px 0 0; font-size:17px; color:var(--ink-soft);}
+.eq-hero .sub strong{color:var(--ink);}
+.hero-logo{justify-self:center;}
+.hero-logo .ring{width:230px; height:230px; border-radius:50%; background:radial-gradient(circle at 50% 40%,#fff,var(--paper-3));
+  border:1px solid var(--line); display:grid; place-items:center; padding:28px;}
+.hero-logo img{width:100%; height:auto;}
+.hero-chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+.chip-tag{display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line-strong);
+  border-radius:999px; padding:8px 16px; font-size:13.5px; font-weight:600; color:var(--ink-soft);}
+.chip-tag b{color:var(--ink);}
+.chip-tag.is-a1{background:var(--accent); border-color:var(--accent); color:#fff;}
+.chip-tag.is-a1 b{color:#fff;}
+.chip-dot{width:9px; height:9px; border-radius:50%; background:var(--earth); box-shadow:0 0 0 3px rgba(111,158,52,.18);}
+
+/* -------- STATS STRIP -------- */
+.eq-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:18px;
+  border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#fff;}
+.eq-stats .stat{padding:26px 24px; border-left:1px solid var(--line);}
+.eq-stats .stat:first-child{border-left:0;}
+.eq-stats .num{font-family:"Ancizar Serif",serif; font-weight:800; font-size:38px; line-height:1; color:var(--accent-ink);}
+.eq-stats .lab{margin-top:8px; font-size:13.5px; color:var(--ink-soft);}
+
+/* -------- DATOS OFICIALES CARDS -------- */
+.eq-cards{display:grid; grid-template-columns:repeat(12,1fr); gap:20px; margin-top:28px;}
+.eq-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px;
+  display:flex; flex-direction:column; gap:6px;}
+.eq-card .ic{width:40px; height:40px; border-radius:10px; background:var(--accent-soft); color:var(--accent-ink);
+  display:grid; place-items:center; margin-bottom:10px; font-size:19px;}
+.eq-card h3{font-family:"Ancizar Sans",sans-serif; font-size:13px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted);}
+.eq-card .big{font-family:"Ancizar Serif",serif; font-size:21px; font-weight:700; color:var(--ink); line-height:1.25;}
+.eq-card .row{display:flex; flex-direction:column; gap:4px; margin-top:2px;}
+.eq-card .k{font-size:12.5px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:.04em;}
+.eq-card .v{font-size:15.5px; color:var(--ink);}
+.eq-card .v a{word-break:break-word;}
+.span-4{grid-column:span 4;}
+.span-6{grid-column:span 6;}
+.span-12{grid-column:span 12;}
+.badge-a1{display:inline-flex; align-items:center; justify-content:center; width:62px; height:62px; border-radius:14px;
+  background:var(--accent); color:#fff; font-family:"Ancizar Serif",serif; font-weight:800; font-size:30px; margin-bottom:6px;}
+.linkrow{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;}
+.btn-eq{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:11px 20px;
+  font-weight:700; font-size:14.5px; border:1px solid var(--accent); color:var(--accent-ink); background:#fff;}
+.btn-eq:hover{background:var(--accent-soft); text-decoration:none;}
+.btn-eq.solid{background:var(--accent); color:#fff; border-color:var(--accent);}
+.btn-eq.solid:hover{background:var(--accent-ink); color:#fff;}
+.btn-eq .arw{font-size:13px;}
+
+/* -------- ENFOQUE (numbered) -------- */
+.enfoque{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:8px;}
+.enfoque .item{display:flex; gap:18px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;}
+.enfoque .n{font-family:"Ancizar Serif",serif; font-weight:800; font-size:30px; color:var(--accent);
+  line-height:1; flex:0 0 auto; min-width:42px;}
+.enfoque .item p{margin:0; font-size:16px; color:var(--ink-soft);}
+
+/* -------- LÍNEAS -------- */
+.lineas{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px;}
+.linea{background:#fff; border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:12px; padding:26px;}
+.linea .idx{font-family:"Ancizar Serif",serif; font-weight:800; color:var(--line-strong); font-size:22px;}
+.linea h3{font-size:19px; font-weight:700; margin-top:8px;}
+.linea p{font-size:14.5px; color:var(--ink-soft); margin:10px 0 0;}
+
+/* -------- QUÉ ES EQUIDAD / QUOTE -------- */
+.equote{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+  background:var(--paper-2); border:1px solid var(--line); border-radius:18px; padding:44px 48px; margin-top:8px;}
+.equote blockquote{margin:0; font-family:"Ancizar Serif",serif; font-style:italic; font-weight:400;
+  font-size:clamp(20px,2.3vw,27px); line-height:1.35; color:var(--ink); position:relative;}
+.equote blockquote::before{content:"\201C"; font-size:64px; color:var(--accent); line-height:0;
+  position:absolute; left:-8px; top:18px; opacity:.35;}
+.equote cite{display:block; margin-top:18px; font-style:normal; font-family:"Ancizar Sans",sans-serif;
+  font-weight:700; font-size:14px; color:var(--accent-ink); letter-spacing:.02em;}
+.equote .body p{margin:0 0 14px; color:var(--ink-soft); font-size:16px;}
+.equote .body p:last-child{margin-bottom:0;}
+
+/* -------- SHINY EMBED -------- */
+.shiny-wrap{margin-top:8px; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#fff;}
+.shiny-head{padding:20px 26px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:space-between; gap:14px; background:var(--paper-2);}
+.shiny-head .t{display:flex; align-items:center; gap:14px;}
+.shiny-head .dot{width:11px; height:11px; border-radius:50%; background:var(--earth);
+  box-shadow:0 0 0 4px rgba(111,158,52,.18);}
+.shiny-head h3{font-size:19px; font-weight:700;}
+.shiny-head p{margin:2px 0 0; font-size:13.5px; color:var(--muted); font-family:"Ancizar Sans",sans-serif;}
+.shiny-frame{position:relative; width:100%; height:clamp(560px,82vh,840px); background:var(--paper-2);}
+.shiny-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0; display:block;}
+.shiny-note{padding:14px 26px; font-size:13.5px; color:var(--muted); border-top:1px solid var(--line);
+  font-family:"Ancizar Sans",sans-serif;}
+
+/* -------- DESARROLLOS -------- */
+.dev-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:8px;}
+.dev{display:flex; align-items:center; gap:18px; background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:24px 26px;}
+.dev:hover{border-color:var(--accent); text-decoration:none;}
+.dev .ic{width:46px; height:46px; border-radius:11px; background:var(--accent-soft); color:var(--accent-ink);
+  display:grid; place-items:center; font-size:20px; flex:0 0 auto;}
+.dev .tt{font-family:"Ancizar Serif",serif; font-weight:700; font-size:18px; color:var(--ink); display:block;}
+.dev .ds{font-size:13.5px; color:var(--muted); margin-top:3px; font-family:"Ancizar Sans",sans-serif; display:block;}
+.dev .go{margin-left:auto; color:var(--accent); font-weight:800;}
+
+/* -------- PUBLICACIONES -------- */
+.pub-list{list-style:none; margin:8px 0 0; padding:0; border-top:1px solid var(--line);}
+.pub-list li{border-bottom:1px solid var(--line);}
+.pub-list a{display:flex; gap:18px; align-items:baseline; padding:18px 8px; color:var(--ink);}
+.pub-list a:hover{background:var(--paper-2); text-decoration:none;}
+.pub-list a:hover .pt{color:var(--accent-ink);}
+.pub-year{flex:0 0 auto; min-width:58px; font-family:"Ancizar Serif",serif; font-weight:800; font-size:15px;
+  color:var(--accent-ink);}
+.pub-list .pt{font-size:16px; line-height:1.45;}
+.pub-list .ext{margin-left:auto; color:var(--muted); flex:0 0 auto; font-size:13px;}
+.pub-source{margin-top:16px; font-size:13.5px; color:var(--muted); font-family:"Ancizar Sans",sans-serif;}
+
+/* -------- Contenedor del desarrollo dentro del cascarón -------- */
+#contenido-equidad{max-width:var(--maxw); margin:0 auto; padding:8px 0 48px; position:relative;}
+
+/* ===================== RESPONSIVE (contenido) ===================== */
+@media (max-width:900px){
+  .eq-secmenu{grid-template-columns:repeat(2,1fr);}
+  .eq-secbar-btn .cur{display:none;}
+  .eq-hero .grid{grid-template-columns:1fr; gap:28px; padding:36px 28px;}
+  .hero-logo{justify-self:start;}
+  .hero-logo .ring{width:170px; height:170px; padding:22px;}
+  .eq-stats{grid-template-columns:repeat(2,1fr);}
+  .eq-stats .stat:nth-child(3){border-left:0;}
+  .eq-stats .stat:nth-child(n+3){border-top:1px solid var(--line);}
+  .enfoque,.lineas,.dev-grid,.equote{grid-template-columns:1fr;}
+  .equote{padding:32px 28px;}
+}
+@media (max-width:760px){
+  .eq-cards .span-4,.eq-cards .span-6{grid-column:span 12;}
+}
+@media (max-width:480px){
+  .eq-stats{grid-template-columns:1fr;}
+  .eq-stats .stat{border-left:0; border-top:1px solid var(--line);}
+  .eq-stats .stat:first-child{border-top:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ====================== HEADER REAL UNAL ====================== -->
+<header>
+  <div class="logo">
+    <a href="https://unal.edu.co/">
+      <div class="svg">
+        <img class="d-print-none img-fluid" alt="Escudo de la Universidad Nacional de Colombia" src="unal/images/escudoUnal.svg" width="808" height="425" />
+      </div>
+    </a>
+  </div>
+  <div id="pestania-accesibilidad-mobile" class="d-block d-md-none"></div>
+  <div class="seal">
+    <img class="d-print-none" alt="Escudo de la República de Colombia" src="unal/images/sealColombia.png" width="66" height="66" />
+  </div>
+
+  <!-- menú contextual (perfiles, redes, idioma) -->
+  <div class="firstMenu ">
+    <div class="content-fluid">
+      <nav class="navbar nav navbar-toggler navbar-expand-md navbar-dark">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class=" collapse navbar-collapse navbar-default">
+          <nav id="profiles">
+            <ul class="me-auto nav justify-content-end">
+              <li class="nav-item item_Aspirantes "><a href="https://aspirantes.unal.edu.co/">Aspirantes</a></li>
+              <li class="nav-item item_Estudiantes"><a href="https://estudiantes.unal.edu.co/">Estudiantes</a></li>
+              <li class="nav-item item_Egresados"><a href="http://egresados.unal.edu.co/">Egresados</a></li>
+              <li class="nav-item item_Docentes"><a href="https://docentes.unal.edu.co/">Docentes</a></li>
+              <li class="nav-item item_Administrativos"><a href="https://administrativos.unal.edu.co/">Administrativos</a></li>
+            </ul>
+          </nav>
+        </div>
+        <ul class="socialLinks d-none d-md-block">
+          <li><a href="https://www.facebook.com/UNALOficial" target="_blank" rel="noopener" class="facebook" title="Página oficial en Facebook"></a></li>
+          <li><a href="https://twitter.com/UNALOficial" target="_blank" rel="noopener" class="twitter" title="Cuenta oficial en Twitter"></a></li>
+          <li><a href="https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg" target="_blank" rel="noopener" class="youtube" title="Canal oficial de Youtube"></a></li>
+          <li><a href="https://www.instagram.com/unaloficial/?hl=es-la" target="_blank" rel="noopener" class="instagram" title="Cuenta oficial en Instagram"></a></li>
+        </ul>
+        <div class="btn-group d-print-none notranslate">
+          <button type="button" class="btn btn-secondary dropdown-toggle language-button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">ESP</button>
+          <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-start language-dropdown">
+            <li><a href="https://unal.edu.co/">Español [ESP]</a></li>
+            <li><a href="https://unal.edu.co/guc/">Wayuunaiki [GUC]</a></li>
+            <li><a href="https://unal.edu.co/pbb/">Nasa yuwe [PBB]</a></li>
+            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=en&amp;_x_tr_hl=es">English [ENG]</a></li>
+            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=fr&amp;_x_tr_hl=es">Français [FRA]</a></li>
+            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=pt&amp;_x_tr_hl=es">Português [POR]</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Menú inferior -->
+  <div id="bs-navbar" class="navigation ">
+    <div class="container-fluid myb d-print-inline-block">
+      <div class="site-url row d-print-none" id="subdominio">
+        <span class="oi oi-map-marker"></span>
+        <a href="https://unal.edu.co/">unal.edu.co</a>
+      </div>
+      <div class="buscador row" id="buscador">
+        <div class="gsc-control-searchbox-only gsc-control-searchbox-only-es" dir="ltr">
+          <form class="gsc-search-box gsc-search-box-tools" onsubmit="return false;">
+            <table cellspacing="0" cellpadding="0" role="presentation" class="gsc-search-box">
+              <tbody><tr>
+                <td class="gsc-input">
+                  <div class="gsc-input-box">
+                    <input autocomplete="off" type="text" class="gsc-input" name="search" title="buscar" aria-label="buscar" placeholder="Buscar en la Universidad" />
+                  </div>
+                </td>
+                <td class="gsc-search-button">
+                  <button class="gsc-search-button gsc-search-button-v2" type="submit" aria-label="buscar">
+                    <svg width="13" height="13" viewBox="0 0 13 13"><title>buscar</title><path d="m4.8495 7.8226c0.82666 0 1.5262-0.29146 2.0985-0.87438 0.57232-0.58292 0.86378-1.2877 0.87438-2.1144 0.010599-0.82666-0.28086-1.5262-0.87438-2.0985-0.59352-0.57232-1.293-0.86378-2.0985-0.87438-0.8055-0.010599-1.5103 0.28086-2.1144 0.87438-0.60414 0.59352-0.8956 1.293-0.87438 2.0985 0.021197 0.8055 0.31266 1.5103 0.87438 2.1144 0.56172 0.60414 1.2665 0.8956 2.1144 0.87438zm4.4695 0.2115 3.681 3.6819-1.259 1.284-3.6817-3.7 0.0019784-0.69479-0.090043-0.098846c-0.87973 0.76087-1.92 1.1413-3.1207 1.1413-1.3553 0-2.5025-0.46363-3.4417-1.3909s-1.4088-2.0686-1.4088-3.4239c0-1.3553 0.4696-2.4966 1.4088-3.4239 0.9392-0.92727 2.0864-1.3969 3.4417-1.4088 1.3553-0.011889 2.4906 0.45771 3.406 1.4088 0.9154 0.95107 1.379 2.0924 1.3909 3.4239 0 1.2126-0.38043 2.2588-1.1413 3.1385l0.098834 0.090049z"></path></svg>
+                  </button>
+                </td>
+              </tr></tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main menu -->
+    <nav class="navbar navbar-expand-md navbar-dark menuPrincipal">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">La Universidad</a><ul class="dropdown-menu"><li><a href="http://rectoria.unal.edu.co/" class="dropdown-item">Rectoría</a></li><li><a href="https://unal.edu.co/la-universidad/constitucion-legal" class="dropdown-item">Constitución legal</a></li><li><a href="https://unal.edu.co/la-universidad/mision-y-vision" class="dropdown-item">Misión y visión</a></li><li><a href="https://unal.edu.co/la-universidad/mensajes-institucionales" class="dropdown-item">Mensajes institucionales</a></li><li><a href="https://unal.edu.co/la-universidad/ubicacion" class="dropdown-item">Ubicación</a></li><li><a href="https://unal.edu.co/la-universidad/estructura" class="dropdown-item">Estructura</a></li></ul></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sedes</a><ul class="dropdown-menu"><li><a href="https://amazonia.unal.edu.co/" class="dropdown-item">Amazonia</a></li><li><a href="https://bogota.unal.edu.co/" class="dropdown-item">Bogotá</a></li><li><a href="https://caribe.unal.edu.co/" class="dropdown-item">Caribe</a></li><li><a href="https://delapaz.unal.edu.co/" class="dropdown-item">De La Paz</a></li><li><a href="https://manizales.unal.edu.co/" class="dropdown-item">Manizales</a></li><li><a href="https://medellin.unal.edu.co/" class="dropdown-item">Medellín</a></li><li><a href="https://orinoquia.unal.edu.co/" class="dropdown-item">Orinoquía</a></li><li><a href="https://palmira.unal.edu.co/" class="dropdown-item">Palmira</a></li><li><a href="https://tumaco-pacifico.unal.edu.co/" class="dropdown-item">Tumaco</a></li></ul></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Investigación</a><ul class="dropdown-menu"><li><a href="https://unal.edu.co/investigacion/la-investigacion-en-la-universidad" class="dropdown-item">La investigación en la Universidad</a></li><li><a href="https://investigacion.unal.edu.co/" class="dropdown-item">Sistema de Investigación</a></li><li><a href="http://www.hermes.unal.edu.co/" class="dropdown-item">Sistema de información Hermes</a></li><li><a href="http://www.posgrados.unal.edu.co/" class="dropdown-item">Dirección Nacional de Programas Posgrado</a></li><li><a href="https://laboratorios.unal.edu.co/" class="dropdown-item">Laboratorios e infraestructura</a></li></ul></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Internacionalización</a><ul class="dropdown-menu"><li><a href="https://unal.edu.co/internacionalizacion/la-universidad-en-el-mundo" class="dropdown-item">La Universidad en el mundo</a></li><li><a href="https://investigacion.unal.edu.co/" class="dropdown-item">Investigación internacional</a></li><li><a href="http://www.dre.unal.edu.co/nc/esx/es/movilidad/entrante.html" class="dropdown-item">Estudiantes extranjeros</a></li><li><a href="http://www.dre.unal.edu.co/movilidad.html" class="dropdown-item">Movilidad</a></li><li><a href="http://www.dre.unal.edu.co/cooperacion/convenios.html" class="dropdown-item">Convenios</a></li></ul></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Formación</a><ul class="dropdown-menu"><li><a href="https://unal.edu.co/formacion/estudiar-en-la-universidad" class="dropdown-item">Estudiar en la Universidad</a></li><li><a href="https://unal.edu.co/formacion/verificacion-titulos-electronicos" class="dropdown-item">Verificación títulos electrónicos</a></li><li><a href="https://admisiones.unal.edu.co/" class="dropdown-item">Admisiones pregrado y posgrado</a></li><li><a href="https://pregrado.unal.edu.co/info_programas" class="dropdown-item">Programas de pregrado</a></li><li><a href="https://posgrados.unal.edu.co/catalogo/" class="dropdown-item">Programas de posgrado</a></li><li><a href="https://hermesextension.unal.edu.co/ords/f?p=116:20" class="dropdown-item">Educación continua y permanente</a></li><li><a href="https://micampus.unal.edu.co/" class="dropdown-item">Educación virtual</a></li></ul></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Extensión</a><ul class="dropdown-menu"><li><a href="https://unal.edu.co/extension/la-extension-en-la-universidad" class="dropdown-item">La extensión en la Universidad</a></li><li><a href="https://extension.unal.edu.co/" class="dropdown-item">Servicios al Estado</a></li><li><a href="https://extension.unal.edu.co/" class="dropdown-item">Servicios a empresas</a></li><li><a href="https://extension.unal.edu.co/" class="dropdown-item">Servicios a la comunidad</a></li></ul></li>
+            <li class="nav-item"><a href="https://unal.edu.co/calendario-academico" class="nav-link">Calendario Académico</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ====================== PANEL DE ACCESIBILIDAD REAL ====================== -->
+<div class="tx-unal-accesibilidad">
+  <div id="panel-accesibilidad" style="display:none" class="panel-content container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3 ">
+            <h4><label for="letter-percent">Tamaño letra</label></h4>
+            <button class="boton-panel" id="letra-disminuir" onclick="cambiarTamanioLetra('-')" type="button">A<sup>-</sup></button>
+            <button class="boton-panel" id="letra-aumentar" onclick="cambiarTamanioLetra('+')" type="button"> A<sup>+</sup></button>
+            <input disabled="1" class="letras-porcentaje" id="letter-percent" type="text" value="100%" />
+          </div>
+          <div class="col-md-3 ">
+            <h4>Cambiar Contrastes</h4>
+            <button class="boton-panel" id="contraste-1" onclick="cambiarContrastes(1)" type="button">1</button>
+            <button class="boton-panel" id="contraste-2" onclick="cambiarContrastes(2)" type="button">2</button>
+            <button class="boton-panel" id="contrate-3" onclick="cambiarContrastes(3)" type="button">3</button>
+          </div>
+          <div class="col-md-3 ">
+            <h4>Invertir colores</h4>
+            <button class="boton-panel" id="inversor" onclick="invertirColores()" type="button">Aplicar</button>
+          </div>
+          <div class="col-md-3">
+            <h4>Restablecer ajustes</h4>
+            <button class="boton-panel" id="defaul-config" onclick="defaultConfig()" type="button">Aplicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="pestania-accesibilidad" class="d-none d-md-block" tabindex="0">Panel de Accesibilidad</div>
+</div>
+
+<!-- ====================== DRAWER DE SERVICIOS REAL ====================== -->
+<div id="mySidebar" class="sidebar hsidebar" style="right: -240px;">
+  <div class="indicator d-none d-md-block"></div>
+  <ul id="services">
+    <li><a href="https://smartkey.xertica.com/cloudkey/a/unal.edu.co/user/login" target="_blank" rel="noopener"><img alt="Correo institucional" src="unal/images/icnServEmail.png" width="32" height="32" />Correo institucional</a></li>
+    <li><a href="https://dninfoa.unal.edu.co/" target="_blank" rel="noopener"><img alt="DINARA - SIA" src="unal/images/icnServSia.png" width="32" height="32" />DINARA - SIA</a></li>
+    <li><a href="https://investigacion.unal.edu.co/laboratorios/servicios" target="_blank" rel="noopener"><img alt="Servicios para la investigación" src="unal/images/icnServInvestigacion.png" width="32" height="32" />Servicios para la investigación</a></li>
+    <li><a href="https://personal.unal.edu.co/" target="_blank" rel="noopener"><img alt="Convocatorias" src="unal/images/icnServCall.png" width="32" height="32" />Convocatorias</a></li>
+    <li><a href="https://identidad.unal.edu.co/guia-de-identidad-visual/"><img alt="Identidad UNAL" src="unal/images/icnServIdentidad.png" width="32" height="32" />Identidad UNAL</a></li>
+    <li><a href="https://portaladquisiciones.unal.edu.co/"><img alt="Portal de contratación" src="unal/images/icnServEngagement.png" width="32" height="32" />Portal de contratación</a></li>
+    <li><a href="https://bibliotecas.unal.edu.co/" target="_blank" rel="noopener"><img alt="Bibliotecas" src="unal/images/icnServLibrary.png" width="32" height="32" />Bibliotecas</a></li>
+    <li><a href="https://registro.bogota.unal.edu.co/" target="_blank" rel="noopener"><img alt="Registro y matrícula" src="unal/images/icnServRegistry.png" width="32" height="32" />Registro y matrícula</a></li>
+    <li><a href="https://bienestar.unal.edu.co/" target="_blank" rel="noopener"><img alt="Bienestar" src="unal/images/icnServBienestar.png" width="32" height="32" />Bienestar</a></li>
+    <li><a href="https://circular.unal.edu.co/museos-lista" target="_blank" rel="noopener"><img alt="Museos" src="unal/images/icnServMuseums.png" width="32" height="32" />Museos</a></li>
+    <li><a href="https://editorial.unal.edu.co/editorial-unal" target="_blank" rel="noopener"><img alt="Editorial" src="unal/images/icnServPress.png" width="32" height="32" />Editorial</a></li>
+    <li><a href="https://legal.unal.edu.co/" target="_blank" rel="noopener"><img alt="Régimen Legal" src="unal/images/icnServLegalRules.png" width="32" height="32" />Régimen Legal</a></li>
+    <li><a href="https://unal.edu.co/portal-para-ninos" target="_blank" rel="noopener"><img alt="Portal para niños" src="unal/images/icnServicesKidsPortal.png" width="32" height="32" />Portal para niños</a></li>
+  </ul>
+</div>
+<div id="main" class="hsidebar" style="right: 0px;">
+  <div class="openbtn" id="openbtnId" onclick="toggleNav();" style="background-position: 0px 0px;"></div>
+</div>
+
+<!-- ====================== CONTENIDO (DESARROLLO) ====================== -->
+<main class="detalle">
+  <a class="skip-link" href="#contenido-equidad">Saltar al contenido principal</a>
+
+  <div class="breadcrumb-class">
+    Está en:
+    <a href="https://unal.edu.co/" title="Inicio">Inicio</a> /
+    <a href="https://medicina.bogota.unal.edu.co/">Facultad de Medicina</a> /
+    <a href="#">Grupos de investigación</a> /
+    Grupo de Equidad en Salud
+  </div>
+
+  <!-- ===== TODO EL DESARROLLO EDITABLE VIVE AQUÍ ===== -->
+  <div id="contenido-equidad">
+
+    <!-- Menú de secciones interno -->
+    <div class="eq-secbar" id="eqSecbar">
+      <button class="eq-secbar-btn" id="secMenuBtn" aria-expanded="false" aria-controls="sectionNav">
+        <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="lbl">Menú</span>
+        <span class="cur" id="secCurrent">El Grupo</span>
+      </button>
+      <nav class="eq-secmenu" id="sectionNav" aria-label="Secciones de esta página">
+        <a href="#presentacion" class="active"><span class="d"></span>El Grupo</a>
+        <a href="#datos"><span class="d"></span>Datos oficiales</a>
+        <a href="#equidad"><span class="d"></span>Marco conceptual</a>
+        <a href="#investigacion"><span class="d"></span>Líneas de investigación</a>
+        <a href="#enfoque"><span class="d"></span>Enfoque estratégico</a>
+        <a href="#indice"><span class="d"></span>Índice de Inequidad</a>
+        <a href="#desarrollos"><span class="d"></span>Desarrollos</a>
+        <a href="#publicaciones"><span class="d"></span>Publicaciones</a>
+      </nav>
+    </div>
+    <div class="eq-secmenu-backdrop" id="secBackdrop" hidden></div>
+
+    <div class="eq-content">
+    <!-- HERO -->
+    <section class="eq-hero" id="presentacion" aria-labelledby="heroTitle">
+      <div class="grid">
+        <div>
+          <p class="kicker">Facultad de Medicina · Universidad Nacional de Colombia</p>
+          <h1 id="heroTitle">
+            <span class="en" lang="en">Health Equity Research Group</span>
+            <span class="es">Grupo de Equidad en Salud</span>
+          </h1>
+          <p class="sub">Investigamos las <strong>inequidades socioeconómicas en los resultados en salud</strong> entre poblaciones, sus mecanismos y las formas de prevenirlas o reducirlas. Grupo creado en <strong>enero de 2006</strong>.</p>
+          <div class="hero-chips">
+            <span class="chip-tag is-a1"><b>Minciencias A1</b></span>
+            <span class="chip-tag"><b>COL0063855</b>&nbsp;· Registro</span>
+            <span class="chip-tag"><span class="chip-dot"></span> Activo&nbsp;<b>·</b>&nbsp;Categorizado en ScienTI</span>
+          </div>
+        </div>
+        <div class="hero-logo">
+          <div class="ring">
+            <img src="assets/logo-equidad-en-salud.png" alt="Logotipo del Grupo de Equidad en Salud: dos manos sosteniendo el planeta Tierra" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS STRIP -->
+    <div class="eq-stats" role="list" aria-label="Cifras del grupo">
+      <div class="stat" role="listitem"><div class="num">2006</div><div class="lab">Año de creación · Facultad de Medicina</div></div>
+      <div class="stat" role="listitem"><div class="num">A1</div><div class="lab">Clasificación Minciencias (máxima)</div></div>
+      <div class="stat" role="listitem"><div class="num">84</div><div class="lab">Integrantes registrados históricamente</div></div>
+      <div class="stat" role="listitem"><div class="num">3</div><div class="lab">Líneas de investigación activas</div></div>
+    </div>
+
+    <!-- DATOS OFICIALES -->
+    <section class="eq-section" id="datos" aria-labelledby="datosTitle">
+      <p class="eq-eyebrow">Datos oficiales</p>
+      <h2 class="eq-h2" id="datosTitle">Ficha del grupo de investigación</h2>
+      <p class="eq-lead">Información registrada ante la Universidad Nacional de Colombia, el Ministerio de Ciencia, Tecnología e Innovación (Minciencias) y la plataforma ScienTI–GrupLAC.</p>
+
+      <div class="eq-cards">
+        <article class="eq-card span-4">
+          <div class="ic" aria-hidden="true">★</div>
+          <h3>Líder del grupo</h3>
+          <p class="big">Javier Hernando Eslava&#8209;Schmalbach</p>
+          <div class="row">
+            <span class="k">Dependencia</span>
+            <span class="v">Facultad de Medicina · Sede Bogotá</span>
+          </div>
+          <div class="row">
+            <span class="k">Objetivo de liderazgo</span>
+            <span class="v">Desarrollar estrategias que permitan implementar el plan de desarrollo del grupo en torno a la equidad en salud.</span>
+          </div>
+        </article>
+
+        <article class="eq-card span-4">
+          <div class="ic" aria-hidden="true">✉</div>
+          <h3>Contacto</h3>
+          <div class="row">
+            <span class="k">Correo del líder</span>
+            <span class="v"><a href="mailto:jheslavas@unal.edu.co">jheslavas@unal.edu.co</a></span>
+          </div>
+          <div class="row">
+            <span class="k">Correo del grupo</span>
+            <span class="v"><a href="mailto:grupequidad_bog@unal.edu.co">grupequidad_bog@unal.edu.co</a></span>
+          </div>
+          <div class="row">
+            <span class="k">Teléfono</span>
+            <span class="v">(+57) 601 316 5000</span>
+          </div>
+          <div class="row">
+            <span class="k">Dirección</span>
+            <span class="v">Edificio ICN, Universidad Nacional de Colombia, Bogotá D.C.</span>
+          </div>
+        </article>
+
+        <article class="eq-card span-4">
+          <div class="badge-a1" aria-hidden="true">A1</div>
+          <h3>Clasificación Minciencias</h3>
+          <p class="big">Categoría A1</p>
+          <div class="row">
+            <span class="k">Estado en ScienTI</span>
+            <span class="v">Categorizado · Activo en la UN</span>
+          </div>
+          <div class="row">
+            <span class="k">Código de registro</span>
+            <span class="v">COL0063855</span>
+          </div>
+          <div class="row">
+            <span class="k">Vigencia</span>
+            <span class="v">A1 hasta la publicación de resultados de la siguiente convocatoria.</span>
+          </div>
+        </article>
+
+        <article class="eq-card span-12">
+          <h3>Avalado y certificado por</h3>
+          <div class="row" style="margin-bottom:14px;">
+            <span class="v">Universidad Nacional de Colombia · Corporación Salud UN · University of Western Australia (no avalado). Certificado el 06 de julio de 2017.</span>
+          </div>
+          <div class="linkrow">
+            <a class="btn-eq solid" href="https://scienti.minciencias.gov.co/gruplac/jsp/visualiza/visualizagr.jsp?nro=00000000006439" target="_blank" rel="noopener">Ver GrupLAC <span class="arw">↗</span></a>
+            <a class="btn-eq" href="http://www.hermes.unal.edu.co/pages/Consultas/Grupo.jsf?idGrupo=222" target="_blank" rel="noopener">Ficha Hermes UNAL <span class="arw">↗</span></a>
+            <a class="btn-eq" href="https://medicina.bogota.unal.edu.co/equidad-en-salud" target="_blank" rel="noopener">Página externa <span class="arw">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- QUÉ ES EQUIDAD EN SALUD -->
+    <section class="eq-section" id="equidad" aria-labelledby="equidadTitle">
+      <p class="eq-eyebrow">Marco conceptual</p>
+      <h2 class="eq-h2" id="equidadTitle">¿Qué es la equidad en salud?</h2>
+      <p class="eq-lead">La equidad en salud aborda las diferencias o disparidades —entre grupos poblacionales y en variables relacionadas con la salud— que se consideran <em>evitables, innecesarias e injustas</em>.</p>
+      <div class="equote">
+        <div>
+          <blockquote>
+            La equidad en salud es la ausencia de disparidades sistemáticas en salud —o en los principales determinantes sociales de la salud— entre grupos con distintos niveles de ventaja o desventaja social subyacente: riqueza, poder o prestigio.
+            <cite>— Paula Braveman (2003)</cite>
+          </blockquote>
+        </div>
+        <div class="body">
+          <p>La Organización Mundial de la Salud (OMS) define la equidad en el cuidado de la salud como el <strong>igual acceso para igual necesidad</strong>, el igual uso para igual necesidad y la igual calidad del cuidado para todas las personas.</p>
+          <p>El grupo amplía esta mirada más allá del enfoque atencionista, incorporando el acceso a la promoción, la prevención, la rehabilitación y los estilos de vida saludables, y reconociendo la dimensión ética y moral de la distribución de la salud.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVESTIGACIÓN: LÍNEAS -->
+    <section class="eq-section" id="investigacion" aria-labelledby="lineasTitle">
+      <p class="eq-eyebrow">Investigación</p>
+      <h2 class="eq-h2" id="lineasTitle">Líneas de investigación</h2>
+      <div class="lineas">
+        <article class="linea">
+          <div class="idx">01</div>
+          <h3>Inequidad en los resultados</h3>
+          <p>Medición y análisis de las desigualdades evitables en los desenlaces en salud entre poblaciones.</p>
+        </article>
+        <article class="linea">
+          <div class="idx">02</div>
+          <h3>Inequidad en salud y categorías sociales</h3>
+          <p>Determinantes sociales, género, raza y etnia como categorías de análisis de la inequidad.</p>
+        </article>
+        <article class="linea">
+          <div class="idx">03</div>
+          <h3>Marco conceptual de la equidad en salud</h3>
+          <p>Profundización conceptual en equidad y equidad en salud desde la historia y autores contemporáneos.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ENFOQUE ESTRATÉGICO -->
+    <section class="eq-section" id="enfoque" aria-labelledby="enfoqueTitle">
+      <p class="eq-eyebrow">Plan de trabajo</p>
+      <h2 class="eq-h2" id="enfoqueTitle">Enfoque estratégico</h2>
+      <p class="eq-lead"><a href="http://www.hermes.unal.edu.co/pages/Consultas/Grupo.jsf?idGrupo=222" target="_blank" rel="noopener">Ver la ficha completa en Hermes UNAL ↗</a></p>
+      <div class="enfoque">
+        <div class="item"><span class="n">1</span><p>Profundización conceptual en equidad y en inequidad en salud, a partir de las posturas planteadas por diferentes autores contemporáneos y a través de la historia.</p></div>
+        <div class="item"><span class="n">2</span><p>Desarrollo metodológico en la estimación de inequidades en salud y su aplicación en la medición a nivel nacional e internacional.</p></div>
+        <div class="item"><span class="n">3</span><p>Desarrollo de categorías de análisis para evaluar la inequidad en salud, incluyendo determinantes sociales, género, raza y etnia.</p></div>
+        <div class="item"><span class="n">4</span><p>Socialización de los resultados de las investigaciones a través de artículos, libros y seminarios de equidad en salud.</p></div>
+      </div>
+    </section>
+
+    <!-- ÍNDICE DE INEQUIDAD (SHINY) -->
+    <section class="eq-section" id="indice" aria-labelledby="indiceTitle">
+      <p class="eq-eyebrow">Herramienta interactiva</p>
+      <h2 class="eq-h2" id="indiceTitle">Índice de Inequidad en Salud — Colombia</h2>
+      <p class="eq-lead">Aplicación desarrollada por el grupo para explorar y visualizar las inequidades en salud en el territorio colombiano.</p>
+      <div class="shiny-wrap">
+        <div class="shiny-head">
+          <div class="t">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <h3>InequityV5 · Tablero interactivo</h3>
+              <p>Dirección de Extensión, Facultad de Medicina — UNAL · Shiny App</p>
+            </div>
+          </div>
+          <a class="btn-eq" href="https://unal-edu-co-dirextmed-fmbog.shinyapps.io/InequityV5/" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+        </div>
+        <div class="shiny-frame">
+          <iframe
+            src="https://unal-edu-co-dirextmed-fmbog.shinyapps.io/InequityV5/"
+            title="Índice de Inequidad en Salud en Colombia — aplicación Shiny del Grupo de Equidad en Salud"
+            loading="lazy"
+            allowfullscreen></iframe>
+        </div>
+        <p class="shiny-note">Si la aplicación no carga aquí, ábrala directamente en <a href="https://unal-edu-co-dirextmed-fmbog.shinyapps.io/InequityV5/" target="_blank" rel="noopener">shinyapps.io ↗</a>. El servicio puede tardar unos segundos en iniciarse.</p>
+      </div>
+    </section>
+
+    <!-- DESARROLLOS PRINCIPALES -->
+    <section class="eq-section" id="desarrollos" aria-labelledby="devTitle">
+      <p class="eq-eyebrow">Desarrollos</p>
+      <h2 class="eq-h2" id="devTitle">Principales desarrollos</h2>
+      <div class="dev-grid">
+        <a class="dev" href="https://unal-edu-co-dirextmed-fmbog.shinyapps.io/InequityV5/" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true">▦</span>
+          <span>
+            <span class="tt">Índice de Inequidad en Salud, Colombia</span>
+            <span class="ds">Tablero interactivo Shiny · medición territorial</span>
+          </span>
+          <span class="go" aria-hidden="true">↗</span>
+        </a>
+        <a class="dev" href="https://rpubs.com/jheslavas/418471" target="_blank" rel="noopener">
+          <span class="ic" aria-hidden="true">∑</span>
+          <span>
+            <span class="tt">Fracción atribuible como medida de inequidad</span>
+            <span class="ds">Documento metodológico · RPubs</span>
+          </span>
+          <span class="go" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- PUBLICACIONES -->
+    <section class="eq-section" id="publicaciones" aria-labelledby="pubTitle">
+      <p class="eq-eyebrow">Producción académica</p>
+      <h2 class="eq-h2" id="pubTitle">Publicaciones recientes</h2>
+      <p class="eq-lead">Selección de artículos indexados en PubMed con participación de integrantes del grupo.</p>
+      <ul class="pub-list">
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/41564940/" target="_blank" rel="noopener"><span class="pub-year">2026</span><span class="pt" lang="en">Clinical, etiological, and demographic aspects of cirrhosis in South America: a report from the South American Liver Research Network</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/41210107/" target="_blank" rel="noopener"><span class="pub-year">2026</span><span class="pt" lang="en">Genetic Analysis of Metabolic-associated Steatosis Liver Disease in a Colombian Cohort</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/40939192/" target="_blank" rel="noopener"><span class="pub-year">2025</span><span class="pt" lang="en">Psilocybin Use in the Autism Spectrum Disorder: A Scoping Review</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/40840971/" target="_blank" rel="noopener"><span class="pub-year">2025</span><span class="pt" lang="en">Socioeconomic inequalities in infant mortality in Colombia: a nationwide cohort study during 10 years</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/38623526/" target="_blank" rel="noopener"><span class="pub-year">2024</span><span class="pt" lang="en">Trends in motorcycle road deaths in Colombia, 2008–2021</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/38241886/" target="_blank" rel="noopener"><span class="pub-year">2024</span><span class="pt" lang="en">Association of Healthcare Fragmentation and the Survival of Patients With Colorectal Cancer in Colombia</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/37864147/" target="_blank" rel="noopener"><span class="pub-year">2023</span><span class="pt" lang="en">Tackling potentially inappropriate prescriptions in older adults: deprescribing criteria by consensus from experts in Colombia, Argentina, and Spain</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/37167575/" target="_blank" rel="noopener"><span class="pub-year">2023</span><span class="pt" lang="en">Fragmentation of Care and Its Association With Survival and Costs for Patients With Breast Cancer in Colombia</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/36950780/" target="_blank" rel="noopener"><span class="pub-year">2023</span><span class="pt" lang="en">A longitudinal study of free leptin index in pre-eclamptic pregnancies</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/36728930/" target="_blank" rel="noopener"><span class="pub-year">2023</span><span class="pt" lang="en">Failure to Rescue and Mortality Differences After Appendectomy in a Low-Middle-Income Country and the United States</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/35977331/" target="_blank" rel="noopener"><span class="pub-year">2022</span><span class="pt" lang="en">Health Insurance Scheme: Main Contributor to Inequalities in COVID-19 Mortality in Colombia</span><span class="ext" aria-hidden="true">PubMed ↗</span></a></li>
+      </ul>
+      <p class="pub-source">Consulte el listado completo de integrantes y productos en el <a href="https://scienti.minciencias.gov.co/gruplac/jsp/visualiza/visualizagr.jsp?nro=00000000006439" target="_blank" rel="noopener">GrupLAC del grupo ↗</a>.</p>
+    </section>
+
+    </div><!-- /eq-content -->
+  </div>
+  <!-- ===== FIN DESARROLLO ===== -->
+</main>
+
+<!-- ====================== FOOTER REAL UNAL ====================== -->
+<footer class="container-fluid d-print-table">
+  <div class="row">
+    <div class="col-sm-6 col-md-3 d-print-none">
+      <nav class="gobiernoLinea">
+        <a href="http://www.legal.unal.edu.co/" target="_top">Régimen Legal</a>
+        <a href="http://personal.unal.edu.co/" target="_top">Talento humano</a>
+        <a href="https://portaladquisiciones.unal.edu.co/" target="_top">Contratación</a>
+        <a href="http://personal.unal.edu.co/" target="_top">Ofertas de empleo</a>
+        <a href="http://launalcuenta.unal.edu.co/" target="_top">Rendición de cuentas</a>
+        <a href="http://docentes.unal.edu.co/concurso-profesoral/" target="_top">Concurso docente</a>
+        <a href="http://www.pagovirtual.unal.edu.co/" target="_top">Pago virtual</a>
+        <a href="http://controlinterno.unal.edu.co/" target="_top">Control interno</a>
+        <a href="http://siga.unal.edu.co/" target="_top">Calidad</a>
+        <a href="https://unal.edu.co/buzon-de-notificaciones/" target="_self">Buzón de notificaciones</a>
+      </nav>
+    </div>
+    <div class="col-sm-6 col-md-3 d-print-none">
+      <nav class="gobiernoLinea">
+        <a href="https://smartkey.xertica.com/cloudkey/a/unal.edu.co/user/login" target="_top">Correo institucional</a>
+        <a href="https://unal.edu.co/mapa-del-sitio">Mapa del sitio</a>
+        <a href="http://redessociales.unal.edu.co/" target="_top">Redes sociales</a>
+        <a href="https://unal.edu.co/faq">Preguntas frecuentes</a>
+        <a href="http://quejasyreclamos.unal.edu.co/" target="_self">Quejas y reclamos</a>
+        <a href="https://unal.edu.co/atencion-en-linea/" target="_self">Servicios en línea</a>
+        <a href="https://unal.edu.co/egresados">Encuesta</a>
+        <a href="https://unal.edu.co/contactenos">Contáctenos</a>
+        <a href="http://estadisticas.unal.edu.co/" target="_top">Estadísticas</a>
+        <a href="https://unal.edu.co/glosario">Glosario</a>
+      </nav>
+    </div>
+    <div class="col-sm-7 col-md-4 contder">
+      <div class="col contacto">
+        <b>Contacto página web:</b><br />
+        Carrera 45 # 26-85<br />
+        Edif. Uriel Gutiérrez - Bogotá D.C., Colombia<br />
+        PBX: (+57) 601 4068888 - (+57) 601 3165000<br />
+        Línea Gratuita Nacional: 01 8000 912 597
+      </div>
+      <div class="col derechos">
+        <a href="http://unal.edu.co/archivos/user_upload/docs/legal.pdf" target="_blank" rel="noopener">© Copyright 2021</a><br />
+        Algunos derechos reservados.<br />
+        <a href="https://unal.edu.co/contactenos">Contáctenos</a><br />
+        <a href="https://unal.edu.co/acerca-de-este-sitio-web">Acerca de este sitio web</a><br />
+        Actualización: 13/05/2026
+      </div>
+    </div>
+    <div class="col-sm-5 col-md-2 asoc-img d-print-none">
+      <div class="container ">
+        <div class="row row-cols-2">
+          <div class="col"><a href="http://orgullo.unal.edu.co/"><img class="img-fluid" alt="Orgullo UN" src="unal/images/log_orgullo.png" width="173" height="38" /></a></div>
+          <div class="col"><a href="https://www.gov.co/"><img class="img-fluid" alt="Portal Único del Estado Colombiano" src="unal/images/log_gobiern.png" width="94" height="37" /></a></div>
+          <div class="col"><a class="imgAgencia" href="http://agenciadenoticias.unal.edu.co/"><img class="img-fluid" alt="Agencia de Noticias" src="unal/images/log_agenc.png" width="179" height="38" /></a></div>
+          <div class="col"><a href="http://www.contaduria.gov.co/"><img class="img-fluid" alt="Contaduría General de la República" src="unal/images/log_contra.png" width="94" height="37" /></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="unal/js/jquery.min.js"></script>
+<script src="unal/js/bootstrap.bundle.min.js"></script>
+<script src="unal/js/accesibilidad.js"></script>
+<script>
+/* toggleNav del drawer de servicios (versión local sin inyección de Google CSE) */
+function openNav(){
+  document.getElementById("mySidebar").style.right="0px";
+  document.getElementById("main").style.right="240px";
+  document.getElementById("openbtnId").style.backgroundPosition="35px 0";
+  document.getElementById("openbtnId").classList.add('active');
+}
+function closeNav(){
+  document.getElementById("mySidebar").style.right="-240px";
+  document.getElementById("main").style.right="0px";
+  document.getElementById("openbtnId").style.backgroundPosition="0 0";
+  document.getElementById("openbtnId").classList.remove('active');
+}
+function toggleNav(){
+  if(document.getElementById("openbtnId").classList.contains('active')){ closeNav(); } else { openNav(); }
+}
+</script>
+<script>
+/* ===== Navegación interna del desarrollo (menú de secciones) ===== */
+(function(){
+  var byId=function(id){return document.getElementById(id);};
+  var secBtn=byId('secMenuBtn'), secMenu=byId('sectionNav'), secBackdrop=byId('secBackdrop'), secCurrent=byId('secCurrent');
+  if(!secBtn) return;
+  function closeSec(){secMenu.classList.remove('open');secBtn.setAttribute('aria-expanded','false');
+    secBackdrop.classList.remove('show');secBackdrop.hidden=true;}
+  function openSec(){secMenu.classList.add('open');secBtn.setAttribute('aria-expanded','true');
+    secBackdrop.hidden=false;requestAnimationFrame(function(){secBackdrop.classList.add('show');});}
+  secBtn.addEventListener('click',function(e){e.stopPropagation();
+    secMenu.classList.contains('open')?closeSec():openSec();});
+  secBackdrop.addEventListener('click',closeSec);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSec();});
+
+  var links=Array.prototype.slice.call(secMenu.querySelectorAll('a'));
+  links.forEach(function(a){
+    a.addEventListener('click',function(){
+      links.forEach(function(x){x.classList.remove('active');});
+      a.classList.add('active');
+      if(secCurrent) secCurrent.textContent=a.textContent.trim();
+      closeSec();
+    });
+  });
+
+  /* Resaltar sección activa al hacer scroll */
+  var sections=links.map(function(a){var id=a.getAttribute('href').slice(1);return document.getElementById(id);}).filter(Boolean);
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          var id=en.target.id;
+          links.forEach(function(x){
+            var match=x.getAttribute('href')==='#'+id;
+            x.classList.toggle('active',match);
+            if(match && secCurrent) secCurrent.textContent=x.textContent.trim();
+          });
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    sections.forEach(function(s){obs.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>
