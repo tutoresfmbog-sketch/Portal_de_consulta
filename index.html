@@ -237,6 +237,41 @@
 .pub-list .ext{margin-left:auto; color:var(--muted); flex:0 0 auto; font-size:13px;}
 .pub-source{margin-top:16px; font-size:13.5px; color:var(--muted); font-family:"Ancizar Sans",sans-serif;}
 
+/* -------- CONTÁCTENOS (formulario) -------- */
+.contact-wrap{display:grid; grid-template-columns:.9fr 1.1fr; gap:0; margin-top:8px;
+  border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#fff;}
+.contact-aside{background:linear-gradient(160deg,var(--accent-ink),var(--accent)); color:#fff;
+  padding:40px 36px; display:flex; flex-direction:column; gap:22px;}
+.contact-aside h3{font-family:"Ancizar Serif",serif; font-size:24px; font-weight:700; color:#fff;}
+.contact-aside p{margin:0; font-size:15px; line-height:1.55; color:rgba(255,255,255,.88);}
+.contact-info{display:flex; flex-direction:column; gap:14px; margin-top:6px;}
+.contact-info .ci-row{display:flex; align-items:flex-start; gap:12px;}
+.contact-info .ci-ic{width:34px; height:34px; border-radius:9px; background:rgba(255,255,255,.16);
+  display:grid; place-items:center; flex:0 0 auto; font-size:15px;}
+.contact-info .ci-t{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.7); font-weight:700;}
+.contact-info .ci-v{font-size:14.5px; color:#fff;}
+.contact-info .ci-v a{color:#fff; text-decoration:underline;}
+.contact-form{padding:40px 36px;}
+.contact-form .cf-row{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.cf-field{margin-bottom:18px; display:flex; flex-direction:column; gap:7px;}
+.cf-field label{font-size:13px; font-weight:700; color:var(--ink); letter-spacing:.02em;}
+.cf-field input,.cf-field select,.cf-field textarea{
+  font-family:"Ancizar Sans",Arial,sans-serif; font-size:15px; color:var(--ink);
+  border:1px solid var(--line-strong); border-radius:9px; padding:12px 14px; background:var(--paper-2);
+  transition:border-color .15s, background .15s;}
+.cf-field input:focus,.cf-field select:focus,.cf-field textarea:focus{
+  outline:none; border-color:var(--accent); background:#fff;}
+.cf-field textarea{resize:vertical; min-height:130px;}
+.cf-submit{display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:#fff;
+  border:0; border-radius:999px; padding:13px 26px; font-weight:700; font-size:15px; cursor:pointer;
+  font-family:"Ancizar Sans",sans-serif; transition:background .15s;}
+.cf-submit:hover{background:var(--accent-ink);}
+.cf-submit:disabled{opacity:.6; cursor:not-allowed;}
+.cf-note{margin-top:14px; font-size:13px; color:var(--muted);}
+.cf-status{margin-top:14px; font-size:14px; font-weight:600; display:none;}
+.cf-status.ok{display:block; color:var(--accent-ink);}
+.cf-status.err{display:block; color:#b23b3b;}
+
 /* -------- Contenedor del desarrollo dentro del cascarón -------- */
 #contenido-equidad{max-width:var(--maxw); margin:0 auto; padding:8px 0 48px; position:relative;}
 
@@ -252,6 +287,8 @@
   .eq-stats .stat:nth-child(n+3){border-top:1px solid var(--line);}
   .enfoque,.lineas,.dev-grid,.equote{grid-template-columns:1fr;}
   .equote{padding:32px 28px;}
+  .contact-wrap{grid-template-columns:1fr;}
+  .contact-form .cf-row{grid-template-columns:1fr;}
 }
 @media (max-width:760px){
   .eq-cards .span-4,.eq-cards .span-6{grid-column:span 12;}
@@ -260,6 +297,7 @@
   .eq-stats{grid-template-columns:1fr;}
   .eq-stats .stat{border-left:0; border-top:1px solid var(--line);}
   .eq-stats .stat:first-child{border-top:0;}
+  .contact-aside,.contact-form{padding:28px 22px;}
 }
 </style>
 </head>
@@ -454,6 +492,7 @@
         <a href="#indice"><span class="d"></span>Índice de Inequidad</a>
         <a href="#desarrollos"><span class="d"></span>Desarrollos</a>
         <a href="#publicaciones"><span class="d"></span>Publicaciones</a>
+        <a href="#contacto"><span class="d"></span>Contáctenos</a>
       </nav>
     </div>
     <div class="eq-secmenu-backdrop" id="secBackdrop" hidden></div>
@@ -692,6 +731,69 @@
       <p class="pub-source">Consulte el listado completo de integrantes y productos en el <a href="https://scienti.minciencias.gov.co/gruplac/jsp/visualiza/visualizagr.jsp?nro=00000000006439" target="_blank" rel="noopener">GrupLAC del grupo ↗</a>.</p>
     </section>
 
+    <!-- CONTÁCTENOS -->
+    <section class="eq-section" id="contacto" aria-labelledby="contactoTitle">
+      <p class="eq-eyebrow">Escríbanos</p>
+      <h2 class="eq-h2" id="contactoTitle">Contáctenos</h2>
+      <p class="eq-lead">¿Tiene una pregunta, una propuesta de colaboración o desea más información sobre nuestras líneas de investigación? Complete el formulario y nos pondremos en contacto.</p>
+
+      <div class="contact-wrap">
+        <aside class="contact-aside">
+          <h3>Grupo de Equidad en Salud</h3>
+          <p>Facultad de Medicina, Universidad Nacional de Colombia, Sede Bogotá.</p>
+          <div class="contact-info">
+            <div class="ci-row">
+              <span class="ci-ic" aria-hidden="true">✉</span>
+              <div>
+                <div class="ci-t">Correo del grupo</div>
+                <div class="ci-v"><a href="mailto:pasantedeinnovacion@hun.edu.co">pasantedeinnovacion@hun.edu.co</a></div>
+              </div>
+            </div>
+            <div class="ci-row">
+              <span class="ci-ic" aria-hidden="true">☎</span>
+              <div>
+                <div class="ci-t">Teléfono</div>
+                <div class="ci-v">(+57) 601 316 5000</div>
+              </div>
+            </div>
+            <div class="ci-row">
+              <span class="ci-ic" aria-hidden="true">⌂</span>
+              <div>
+                <div class="ci-t">Dirección</div>
+                <div class="ci-v">Edificio ICN, Universidad Nacional de Colombia, Bogotá D.C.</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="contact-form">
+          <form id="formContacto" novalidate>
+            <div class="cf-row">
+              <div class="cf-field">
+                <label for="cf-nombre">Nombre</label>
+                <input type="text" id="cf-nombre" name="nombre" autocomplete="name" required />
+              </div>
+              <div class="cf-field">
+                <label for="cf-correo">Correo electrónico</label>
+                <input type="email" id="cf-correo" name="correo" autocomplete="email" required />
+              </div>
+            </div>
+            <div class="cf-field">
+              <label for="cf-tema">Tema</label>
+              <input type="text" id="cf-tema" name="tema" placeholder="Ej. Colaboración académica, prensa, vinculación al grupo..." required />
+            </div>
+            <div class="cf-field">
+              <label for="cf-mensaje">Mensaje</label>
+              <textarea id="cf-mensaje" name="mensaje" required></textarea>
+            </div>
+            <button type="submit" class="cf-submit">Enviar mensaje <span aria-hidden="true">→</span></button>
+            <p class="cf-note">Al enviar este formulario recibirás una copia de confirmación en tu correo, y el equipo del grupo recibirá tu mensaje directamente.</p>
+            <p class="cf-status" id="cfStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
     </div><!-- /eq-content -->
   </div>
   <!-- ===== FIN DESARROLLO ===== -->
@@ -820,6 +922,78 @@ function toggleNav(){
     },{rootMargin:'-45% 0px -50% 0px',threshold:0});
     sections.forEach(function(s){obs.observe(s);});
   }
+})();
+</script>
+
+<!-- ====================== EmailJS: SDK + envío del formulario de contacto ====================== -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // Reemplaza con tu Public Key (Account -> General en EmailJS)
+  emailjs.init("RGmyGz8r1j877kkeN");
+</script>
+<script>
+/* ===== Formulario de contacto: envía notificación al pasante y confirmación al remitente ===== */
+(function(){
+  var form = document.getElementById('formContacto');
+  if(!form) return;
+  var status = document.getElementById('cfStatus');
+
+  // Reemplaza con tu Service ID (Email Services en EmailJS)
+  var SERVICE_ID = 'service_3ta2pea';
+  // Plantilla de notificación al pasante (To Email fijo: pasantedeinnovacion@hun.edu.co)
+  var TEMPLATE_NOTIFICACION = 'template_ddy4qdh';
+  // Plantilla de confirmación al remitente (To Email: {{email}})
+  var TEMPLATE_CONFIRMACION = 'template_5fp5ky6';
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var nombre = document.getElementById('cf-nombre').value.trim();
+    var correo = document.getElementById('cf-correo').value.trim();
+    var tema = document.getElementById('cf-tema').value.trim();
+    var mensaje = document.getElementById('cf-mensaje').value.trim();
+
+    if(!nombre || !correo || !tema || !mensaje){
+      status.textContent = 'Por favor complete todos los campos del formulario.';
+      status.className = 'cf-status err';
+      return;
+    }
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailPattern.test(correo)){
+      status.textContent = 'Por favor ingrese un correo electrónico válido.';
+      status.className = 'cf-status err';
+      return;
+    }
+
+    var submitBtn = form.querySelector('.cf-submit');
+    submitBtn.disabled = true;
+    status.textContent = 'Enviando mensaje...';
+    status.className = 'cf-status ok';
+
+    var params = {
+  name: nombre,
+  from_name: nombre,
+  email: correo,
+  from_email: correo,
+  to_email: correo,
+  subject: tema,
+  message: mensaje
+};
+
+    Promise.all([
+      emailjs.send(SERVICE_ID, TEMPLATE_NOTIFICACION, params),
+      emailjs.send(SERVICE_ID, TEMPLATE_CONFIRMACION, params)
+    ]).then(function(){
+      status.textContent = '¡Mensaje enviado! Te llegará una confirmación a tu correo.';
+      status.className = 'cf-status ok';
+      form.reset();
+    }).catch(function(err){
+      console.error('EmailJS error:', err);
+      status.textContent = 'Hubo un problema al enviar el mensaje. Intenta de nuevo o escríbenos directamente a grupequidad_bog@unal.edu.co.';
+      status.className = 'cf-status err';
+    }).finally(function(){
+      submitBtn.disabled = false;
+    });
+  });
 })();
 </script>
 </body>
