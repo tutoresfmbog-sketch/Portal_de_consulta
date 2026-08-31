@@ -242,7 +242,7 @@
   border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#fff;}
 .contact-aside{background:linear-gradient(160deg,var(--accent-ink),var(--accent)); color:#fff;
   padding:40px 36px; display:flex; flex-direction:column; gap:22px;}
-.contact-aside h3{font-family:"Ancizar Serif",serif; font-size:24px; font-weight:700; color:#fff;}
+#contenido-equidad .contact-aside h3{font-family:"Ancizar Serif",serif; font-size:24px; font-weight:700; color:#fff;}
 .contact-aside p{margin:0; font-size:15px; line-height:1.55; color:rgba(255,255,255,.88);}
 .contact-info{display:flex; flex-direction:column; gap:14px; margin-top:6px;}
 .contact-info .ci-row{display:flex; align-items:flex-start; gap:12px;}
@@ -250,17 +250,18 @@
   display:grid; place-items:center; flex:0 0 auto; font-size:15px;}
 .contact-info .ci-t{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.7); font-weight:700;}
 .contact-info .ci-v{font-size:14.5px; color:#fff;}
-.contact-info .ci-v a{color:#fff; text-decoration:underline;}
+#contenido-equidad .contact-info .ci-v a{color:#fff; text-decoration:none;}
 .contact-form{padding:40px 36px;}
 .contact-form .cf-row{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
 .cf-field{margin-bottom:18px; display:flex; flex-direction:column; gap:7px;}
-.cf-field label{font-size:13px; font-weight:700; color:var(--ink); letter-spacing:.02em;}
+.cf-field label{font-size:13px; font-weight:700; color:var(--accent-ink); letter-spacing:.02em;}
 .cf-field input,.cf-field select,.cf-field textarea{
   font-family:"Ancizar Sans",Arial,sans-serif; font-size:15px; color:var(--ink);
   border:1px solid var(--line-strong); border-radius:9px; padding:12px 14px; background:var(--paper-2);
   transition:border-color .15s, background .15s;}
+.cf-field input::placeholder,.cf-field textarea::placeholder{color:var(--muted); opacity:1;}
 .cf-field input:focus,.cf-field select:focus,.cf-field textarea:focus{
-  outline:none; border-color:var(--accent); background:#fff;}
+  outline:none; border-color:var(--accent); background:#fff; color:var(--ink);}
 .cf-field textarea{resize:vertical; min-height:130px;}
 .cf-submit{display:inline-flex; align-items:center; gap:10px; background:var(--accent); color:#fff;
   border:0; border-radius:999px; padding:13px 26px; font-weight:700; font-size:15px; cursor:pointer;
@@ -342,17 +343,17 @@
           <li><a href="https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg" target="_blank" rel="noopener" class="youtube" title="Canal oficial de Youtube"></a></li>
           <li><a href="https://www.instagram.com/unaloficial/?hl=es-la" target="_blank" rel="noopener" class="instagram" title="Cuenta oficial en Instagram"></a></li>
         </ul>
-        <div class="btn-group d-print-none notranslate">
-          <button type="button" class="btn btn-secondary dropdown-toggle language-button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">ESP</button>
-          <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-start language-dropdown">
-            <li><a href="https://unal.edu.co/">Español [ESP]</a></li>
-            <li><a href="https://unal.edu.co/guc/">Wayuunaiki [GUC]</a></li>
-            <li><a href="https://unal.edu.co/pbb/">Nasa yuwe [PBB]</a></li>
-            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=en&amp;_x_tr_hl=es">English [ENG]</a></li>
-            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=fr&amp;_x_tr_hl=es">Français [FRA]</a></li>
-            <li><a href="https://unal-edu-co.translate.goog/?_x_tr_sl=es&amp;_x_tr_tl=pt&amp;_x_tr_hl=es">Português [POR]</a></li>
-          </ul>
-        </div>
+       <div class="btn-group d-print-none notranslate">
+  <button type="button" class="btn btn-secondary dropdown-toggle language-button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">ESP</button>
+  <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-start language-dropdown">
+    <li><a href="#" data-lang="es">Español [ESP]</a></li>
+    <li><a href="https://unal.edu.co/guc/">Wayuunaiki [GUC]</a></li>
+    <li><a href="https://unal.edu.co/pbb/">Nasa yuwe [PBB]</a></li>
+    <li><a href="#" data-lang="en">English [ENG]</a></li>
+    <li><a href="#" data-lang="fr">Français [FRA]</a></li>
+    <li><a href="#" data-lang="pt">Português [POR]</a></li>
+  </ul>
+</div>
       </nav>
     </div>
   </div>
@@ -992,6 +993,23 @@ function toggleNav(){
       status.className = 'cf-status err';
     }).finally(function(){
       submitBtn.disabled = false;
+    });
+  });
+})();
+</script>
+<script>
+(function(){
+  var links = document.querySelectorAll('.language-dropdown a[data-lang]');
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var lang = a.getAttribute('data-lang');
+      if(lang === 'es'){ return; } // ya estamos en español, no hace nada
+      var host = window.location.hostname.replace(/\./g, '-') + '.translate.goog';
+      var path = window.location.pathname + window.location.search + window.location.hash;
+      var sep = path.indexOf('?') > -1 ? '&' : '?';
+      var url = 'https://' + host + path + sep + '_x_tr_sl=es&_x_tr_tl=' + lang + '&_x_tr_hl=es';
+      window.location.href = url;
     });
   });
 })();
