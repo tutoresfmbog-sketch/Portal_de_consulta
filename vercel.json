@@ -1,0 +1,1 @@
+{"version":2,"rewrites":[{"source":"/app","destination":"/api/page"}],"headers":[{"source":"/app","headers":[{"key":"Cache-Control","value":"private, no-store"}]}]}
