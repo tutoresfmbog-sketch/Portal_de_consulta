@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=2.5, user-scalable=yes" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="author" content="Grupo de Equidad en Salud — Facultad de Medicina, UNAL" />
-<meta name="description" content="Grupo de Equidad en Salud de la Facultad de Medicina de la Universidad Nacional de Colombia. Investigación sobre inequidades socioeconómicas en los resultados en salud. Clasificación Minciencias A1." />
+<meta name="author" content="Sistema de Acompañamiento Estudiantil UNAL " />
+<meta name="description" content="Sistema de Acompañamiento Estudiantil de la Facultad de Medicina de la Universidad Nacional de Colombia. Investigación sobre inequidades socioeconómicas en los resultados en salud. Clasificación Minciencias A1." />
 <link rel="icon" href="https://unal.edu.co/typo3conf/ext/unal_skin_default/Resources/Public/images/favicon.ico" type="image/vnd.microsoft.icon" />
-<title>Grupo de Equidad en Salud : Universidad Nacional de Colombia</title>
+<title>Sistema de Acompañamiento Estudiantil UNAL : Universidad Nacional de Colombia</title>
 
 <!-- ============================================================= -->
 <!-- Cascarón institucional REAL de la UNAL (CSS originales)        -->
@@ -1153,6 +1153,18 @@
 #eq-quick-status{font-size:13px;color:#596c65;margin:10px 0 0}
 .fl-prog li.eq-found{background:#dff4eb!important;outline:2px solid #15786b;outline-offset:3px;border-radius:4px;scroll-margin-top:100px}
 @media(max-width:600px){#eq-quick-open{right:12px;bottom:16px}#eq-quick-panel{right:10px;bottom:76px;width:calc(100vw - 20px);max-height:75vh}}
+
+/* Lista compacta de búsqueda y paginación de 5 resultados */
+#eq-quick-panel{max-height:min(520px,75vh)}
+#eq-quick-results{gap:5px}
+.eq-quick-result{padding:8px 11px;line-height:1.3}
+.eq-quick-result b{font-size:13.5px}
+.eq-quick-result small{font-size:11.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq-quick-pages{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #e0e8e2}
+.eq-quick-pages[hidden]{display:none!important}
+.eq-quick-pages button{background:#e6f1ef;color:#0e574e;border:1px solid #b8d4c9;border-radius:8px;padding:7px 10px;font:700 12px "Ancizar Sans",Arial,sans-serif;cursor:pointer}
+.eq-quick-pages button:disabled{opacity:.4;cursor:not-allowed}
+#eq-quick-page-label{font-size:12px;color:#596c65;white-space:nowrap}
 </style>
 
 <!-- Búsqueda rápida disponible desde cualquier parte de la consulta autenticada -->
@@ -1164,6 +1176,11 @@
     <input id="eq-quick-input" type="search" placeholder="Escribe el nombre del estudiante…" autocomplete="off">
     <p id="eq-quick-status" role="status" aria-live="polite">Escribe al menos 2 caracteres para buscar.</p>
     <div id="eq-quick-results"></div>
+    <nav id="eq-quick-pages" class="eq-quick-pages" aria-label="Páginas de resultados" hidden>
+      <button type="button" id="eq-quick-prev">‹ Anterior</button>
+      <span id="eq-quick-page-label" aria-live="polite"></span>
+      <button type="button" id="eq-quick-next">Siguiente ›</button>
+    </nav>
   </div>
 </section>
 <div class="fl-wrap" id="estudiantes-tutor">
@@ -2002,34 +2019,35 @@ function toggleNav(){
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && !quickPanel.hidden) quickToggle(false);
     });
-    function quickSearch() {
-      var term = plano(quickInput.value.trim());
+    var quickPages = document.getElementById('eq-quick-pages');
+    var quickPrev = document.getElementById('eq-quick-prev');
+    var quickNext = document.getElementById('eq-quick-next');
+    var quickPageLabel = document.getElementById('eq-quick-page-label');
+    var quickMatches = [];
+    var quickPage = 0;
+    var quickPageSize = 5;
+
+    function renderQuickPage() {
       quickResults.replaceChildren();
-      if (term.length < 2) {
-        quickStatus.textContent = 'Escribe al menos 2 caracteres para buscar.';
-        return;
-      }
-      var normalizedDoc = quickInput.value.replace(/[\\s.\\-]/g, '');
-      var docQuery = /^\\d+$/.test(normalizedDoc) ? normalizedDoc : '';
-      var matches = est.filter(function (e) {
-        return plano(e.n + ' ' + e.t + ' ' + e.p + ' ' + e.cu + ' ' + e.cp).includes(term) ||
-          (docQuery && String(e.doc).includes(docQuery));
-      });
-      quickStatus.textContent = matches.length
-        ? matches.length + (matches.length === 1 ? ' coincidencia' : ' coincidencias') + ' · mostrando hasta 15'
-        : 'No se encontraron estudiantes.';
-      matches.slice(0, 15).forEach(function (e) {
+      var total = quickMatches.length;
+      var pages = Math.max(1, Math.ceil(total / quickPageSize));
+      quickPage = Math.min(Math.max(quickPage, 0), pages - 1);
+      quickPages.hidden = total <= quickPageSize;
+      quickPrev.disabled = quickPage === 0;
+      quickNext.disabled = quickPage >= pages - 1;
+      quickPageLabel.textContent = 'Página ' + (quickPage + 1) + ' de ' + pages;
+
+      quickMatches.slice(quickPage * quickPageSize, (quickPage + 1) * quickPageSize).forEach(function (e) {
         var b = document.createElement('button');
         b.type = 'button';
         b.className = 'eq-quick-result';
         var name = document.createElement('b');
         name.textContent = titleName(e.n);
         var detail = document.createElement('small');
-        detail.textContent = cleanProg(e.p.replace(/^\\w+-/, '')) + ' · ' +
+        detail.textContent = cleanProg(e.p.replace(/^\w+-/, '')) + ' · ' +
           (e.t ? 'Tutor: ' + titleName(e.t) : 'Pendiente de tutor');
         b.append(name, detail);
         b.addEventListener('click', function () {
-          // Mantener el filtro original sincronizado y navegar a la coincidencia exacta.
           q.value = '';
           run();
           var li = cont.querySelector('li[data-i="' + e.i + '"]');
@@ -2044,6 +2062,35 @@ function toggleNav(){
         quickResults.appendChild(b);
       });
     }
+
+    function quickSearch() {
+      var raw = quickInput.value.trim();
+      var term = plano(raw);
+      quickPage = 0;
+      quickMatches = [];
+      if (term.length < 2) {
+        quickStatus.textContent = 'Escribe al menos 2 caracteres para buscar.';
+        renderQuickPage();
+        return;
+      }
+      var normalizedDoc = raw.replace(/[\s.\-]/g, '');
+      var docQuery = /^\d+$/.test(normalizedDoc) ? normalizedDoc : '';
+      quickMatches = est.filter(function (e) {
+        return plano(e.n + ' ' + e.t + ' ' + e.p + ' ' + e.cu + ' ' + e.cp).includes(term) ||
+          (docQuery && String(e.doc).includes(docQuery));
+      });
+      quickStatus.textContent = quickMatches.length
+        ? quickMatches.length + (quickMatches.length === 1 ? ' estudiante encontrado' : ' estudiantes encontrados')
+        : 'No se encontraron estudiantes.';
+      renderQuickPage();
+    }
+
+    quickPrev.addEventListener('click', function () {
+      if (quickPage > 0) { quickPage--; renderQuickPage(); }
+    });
+    quickNext.addEventListener('click', function () {
+      if ((quickPage + 1) * quickPageSize < quickMatches.length) { quickPage++; renderQuickPage(); }
+    });
     quickInput.addEventListener('input', quickSearch);
     if (q) q.addEventListener('input', run);
     var o = document.getElementById('fe-open'), x = document.getElementById('fe-close');
