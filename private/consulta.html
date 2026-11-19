@@ -1092,6 +1092,16 @@
 @media(max-width:700px){.fl-prog ul{columns:1}}
 
 
+#fe-list .fl-prog{border-radius:13px;overflow:hidden;border:1px solid #d8e5df}
+#fe-list .fl-prog summary{background:#f4faf7;padding:12px 15px}
+#fe-list .fl-prog ul{columns:1!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:12px 14px}
+#fe-list .fl-prog li{border:1px solid #e0e9e4;border-radius:9px;padding:9px 11px;background:#fff;min-width:0}
+#fe-list .fl-prog li[hidden]{display:none!important}
+#fe-list .fl-pages{display:flex;justify-content:center;align-items:center;gap:12px;padding:10px;border-top:1px solid #edf1ee}
+#fe-list .fl-pages[hidden]{display:none!important}
+#fe-list .fl-pages button{background:#e5f2eb;color:#145d50;border:1px solid #c2dbce;border-radius:8px;padding:7px 12px;cursor:pointer}
+#fe-list .fl-pages button:disabled{opacity:.4}
+@media(max-width:650px){#fe-list .fl-prog ul{grid-template-columns:1fr}}
 /* Especialidades médicas: verde claro, sin afectar Pregrado ni Posgrado */
 #tut-t-esp thead th{
   background:#dff0dc;
@@ -1963,7 +1973,7 @@ function toggleNav(){
             '<span class="fl-id" hidden></span></li>';
         }).join('');
         html += '<details class="fl-prog"><summary><span class="fl-pn">' + esc(cleanProg(nm)) +
-          ' <em>(' + esc(cod) + ')</em></span><span class="fl-c">' + por[p].length + '</span></summary><ul>' + lis + '</ul></details>';
+          ' <em>(' + esc(cod) + ')</em></span><span class="fl-c">' + por[p].length + '</span></summary><ul>' + lis + '</ul><div class="fl-pages" hidden><button type="button" class="fl-prev">‹ Anterior</button><span class="fl-page-info"></span><button type="button" class="fl-next">Siguiente ›</button></div></details>'; 
       });
     });
     cont.innerHTML = html;
@@ -1973,32 +1983,55 @@ function toggleNav(){
 
     var q = document.getElementById('fe-q');
     var progs = [].slice.call(cont.querySelectorAll('.fl-prog'));
+    var perPage = 5;
+    progs.forEach(function (p) {
+      p.dataset.page = '0';
+      p.querySelector('.fl-prev').addEventListener('click', function () {
+        p.dataset.page = String(Math.max(0, Number(p.dataset.page) - 1)); run();
+      });
+      p.querySelector('.fl-next').addEventListener('click', function () {
+        p.dataset.page = String(Number(p.dataset.page) + 1); run();
+      });
+    });
     function run() {
-      var raw = q.value.trim(), t = plano(raw), td = raw.replace(/[\s.\-]/g, ''), esNum = /^\d+$/.test(td), tot = 0;
+      var raw = q.value.trim(), t = plano(raw), td = raw.replace(/[\\s.\\-]/g, ''), esNum = /^\\d+$/.test(td), tot = 0;
       progs.forEach(function (p) {
-        var n = 0;
+        var found = [];
         [].forEach.call(p.querySelectorAll('li'), function (li) {
           var porNombre = !t || li.getAttribute('data-n').indexOf(t) > -1;
           var porDoc = !!t && esNum && li.getAttribute('data-d').indexOf(td) > -1;
           var porMail = !!t && li.getAttribute('data-c').indexOf(t) > -1;
           var ok = porNombre || porDoc || porMail;
-          li.hidden = !ok; if (ok) n++;
-          // Mostrar documento/correo solo cuando la coincidencia NO es por nombre
+          if (ok) found.push(li);
           var id = li.querySelector('.fl-id'), txt = '';
-          if (ok && !porNombre) {
-            if (porDoc) txt = '';  /* la cédula nunca se muestra */
-            else {
-              var cu = li.getAttribute('data-cu'), cp = li.getAttribute('data-cp');
-              txt = 'Correo: ' + (cu && plano(cu).indexOf(t) > -1 ? cu : cp);
-            }
+          if (ok && !porNombre && !porDoc) {
+            var cu = li.getAttribute('data-cu'), cp = li.getAttribute('data-cp');
+            txt = 'Correo: ' + (cu && plano(cu).indexOf(t) > -1 ? cu : cp);
           }
           id.textContent = txt; id.hidden = !txt;
+          li.hidden = true;
         });
-        p.hidden = n === 0; tot += n; p.querySelector('.fl-c').textContent = n;
-        if (t && n) p.open = true;
+        var count = found.length, pages = Math.max(1, Math.ceil(count / perPage));
+        var page = Math.min(Math.max(0, Number(p.dataset.page || 0)), pages - 1);
+        p.dataset.page = String(page);
+        found.slice(page * perPage, (page + 1) * perPage).forEach(function (li) { li.hidden = false; });
+        p.hidden = count === 0;
+        p.querySelector('.fl-c').textContent = count;
+        var nav = p.querySelector('.fl-pages');
+        nav.hidden = count <= perPage;
+        nav.querySelector('.fl-page-info').textContent = 'Página ' + (page + 1) + ' de ' + pages;
+        nav.querySelector('.fl-prev').disabled = page === 0;
+        nav.querySelector('.fl-next').disabled = page >= pages - 1;
+        if (t && count) p.open = true;
+        tot += count;
       });
-      c.textContent = pl(tot);
+      if (c) c.textContent = pl(tot);
     }
+    if (q) q.addEventListener('input', function () {
+      progs.forEach(function (p) { p.dataset.page = '0'; });
+      run();
+    });
+    run();
 
     // Búsqueda inmediata desde cualquier punto del portal privado.
     // Los resultados se crean con textContent para evitar inyección HTML.
@@ -2049,10 +2082,14 @@ function toggleNav(){
         b.append(name, detail);
         b.addEventListener('click', function () {
           q.value = '';
-          run();
           var li = cont.querySelector('li[data-i="' + e.i + '"]');
           if (!li) return;
           var prog = li.closest('details');
+          if (prog) {
+            var allItems = [].slice.call(prog.querySelectorAll('li'));
+            prog.dataset.page = String(Math.floor(allItems.indexOf(li) / perPage));
+          }
+          run();
           if (prog) prog.open = true;
           cont.querySelectorAll('.eq-found').forEach(function (x) { x.classList.remove('eq-found'); });
           li.classList.add('eq-found');
@@ -2092,7 +2129,7 @@ function toggleNav(){
       if ((quickPage + 1) * quickPageSize < quickMatches.length) { quickPage++; renderQuickPage(); }
     });
     quickInput.addEventListener('input', quickSearch);
-    if (q) q.addEventListener('input', run);
+
     var o = document.getElementById('fe-open'), x = document.getElementById('fe-close');
     if (o) o.onclick = function () { progs.forEach(function (p) { if (!p.hidden) p.open = true; }); };
     if (x) x.onclick = function () { progs.forEach(function (p) { p.open = false; }); };
