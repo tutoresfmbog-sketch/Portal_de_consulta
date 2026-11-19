@@ -1135,7 +1135,37 @@
 #tut-t-pre thead th.is-sel,#tut-t-pos thead th.is-sel,#tut-t-esp thead th.is-sel{background:#f7d4d4; color:#7a2e2e;}
 #tut-t-pre tbody tr:not(.det):not(.lvl) td.is-sel,#tut-t-pos tbody tr:not(.det):not(.lvl) td.is-sel,#tut-t-esp tbody tr:not(.det):not(.lvl) td.is-sel{background:#fff0f0; color:#7a2e2e; font-weight:700;}
 
+
+/* Buscador rápido: visible sin desplazarse hasta el listado */
+#eq-quick-open{position:fixed;right:22px;bottom:86px;z-index:9000;border:0;border-radius:999px;background:#0e574e;color:white;padding:13px 19px;box-shadow:0 8px 25px #0003;font:700 15px "Ancizar Sans",Arial,sans-serif;cursor:pointer}
+#eq-quick-panel{position:fixed;right:22px;bottom:146px;z-index:9001;width:min(460px,calc(100vw - 28px));max-height:min(620px,75vh);display:flex;flex-direction:column;background:white;border:1px solid #cbded7;border-radius:16px;box-shadow:0 16px 48px #0003;overflow:hidden;font-family:"Ancizar Sans",Arial,sans-serif}
+#eq-quick-panel[hidden]{display:none!important}
+.eq-quick-head{padding:17px 18px;background:#e6f1ef;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.eq-quick-head strong{color:#0e574e;font-size:17px}
+#eq-quick-close{border:0;background:transparent;font-size:24px;cursor:pointer;color:#0e574e}
+.eq-quick-body{padding:16px;overflow:auto}
+#eq-quick-input{display:block;width:100%;padding:13px 14px;border:1px solid #a9c8bc;border-radius:9px;font:inherit;font-size:16px}
+#eq-quick-results{margin-top:12px;display:grid;gap:7px}
+.eq-quick-result{display:block;text-align:left;width:100%;border:1px solid #e0e8e2;background:#fff;border-radius:10px;padding:11px 12px;cursor:pointer;font:inherit}
+.eq-quick-result:hover,.eq-quick-result:focus-visible{background:#e6f1ef;border-color:#15786b}
+.eq-quick-result b{display:block;color:#26332f}
+.eq-quick-result small{display:block;color:#596c65;margin-top:3px}
+#eq-quick-status{font-size:13px;color:#596c65;margin:10px 0 0}
+.fl-prog li.eq-found{background:#dff4eb!important;outline:2px solid #15786b;outline-offset:3px;border-radius:4px;scroll-margin-top:100px}
+@media(max-width:600px){#eq-quick-open{right:12px;bottom:16px}#eq-quick-panel{right:10px;bottom:76px;width:calc(100vw - 20px);max-height:75vh}}
 </style>
+
+<!-- Búsqueda rápida disponible desde cualquier parte de la consulta autenticada -->
+<button id="eq-quick-open" type="button" aria-controls="eq-quick-panel" aria-expanded="false">⌕ Buscar estudiante</button>
+<section id="eq-quick-panel" role="dialog" aria-label="Búsqueda rápida de estudiantes" hidden>
+  <div class="eq-quick-head"><strong>Buscar estudiante</strong><button id="eq-quick-close" type="button" aria-label="Cerrar búsqueda">×</button></div>
+  <div class="eq-quick-body">
+    <label for="eq-quick-input">Nombre, tutor, documento o correo</label>
+    <input id="eq-quick-input" type="search" placeholder="Escribe el nombre del estudiante…" autocomplete="off">
+    <p id="eq-quick-status" role="status" aria-live="polite">Escribe al menos 2 caracteres para buscar.</p>
+    <div id="eq-quick-results"></div>
+  </div>
+</section>
 <div class="fl-wrap" id="estudiantes-tutor">
   <h3 style="font-size:22px;margin-top:40px">Estudiantes y tutores</h3>
   <p class="eq-lead" style="font-size:16px">Busque en un solo lugar a los estudiantes activos, tengan o no tutor asignado. Puede buscar por nombre, tutor, documento o correo electrónico. Despliegue el programa para ver el listado.</p>
@@ -1894,8 +1924,8 @@ function toggleNav(){
     var cont = document.getElementById('fe-list');
     if (!cont) return;
     // fila: [nombre, idxPrograma, idxTutor (-1 = pendiente), documento, correo UNAL, correo personal]
-    var est = D.r.map(function (r) {
-      return { n: r[0].trim(), p: D.p[r[1]], t: r[2] >= 0 ? D.t[r[2]] : '', doc: r[3] || '', cu: r[4] || '', cp: r[5] || '' };
+    var est = D.r.map(function (r, i) {
+      return { i: i, n: r[0].trim(), p: D.p[r[1]], t: r[2] >= 0 ? D.t[r[2]] : '', doc: r[3] || '', cu: r[4] || '', cp: r[5] || '' };
     });
     var html = '';
     ORDEN.forEach(function (niv) {
@@ -1908,7 +1938,7 @@ function toggleNav(){
         var m = p.match(/^(\w+)-(.*)$/), cod = m ? m[1] : '', nm = m ? m[2] : p;
         var lis = por[p].sort(function (a, b) { return a.n.localeCompare(b.n, 'es'); }).map(function (e) {
           // El documento y los correos NO se muestran por defecto: solo aparecen si la búsqueda coincide con ellos y no con el nombre.
-          return '<li data-n="' + esc(plano(e.n + ' ' + e.t)) + '" data-d="' + esc(e.doc) + '" data-c="' + esc(plano(e.cu + ' ' + e.cp)) + '"' +
+          return '<li data-i="' + e.i + '" data-n="' + esc(plano(e.n + ' ' + e.t)) + '" data-d="' + esc(e.doc) + '" data-c="' + esc(plano(e.cu + ' ' + e.cp)) + '"' +
             ' data-cu="' + esc(e.cu) + '" data-cp="' + esc(e.cp) + '">' +
             '<span class="fl-name">' + esc(titleName(e.n)) + '</span>' +
             (e.t ? '<span class="fl-tut">Tutor: ' + esc(titleName(e.t)) + '</span>'
@@ -1952,6 +1982,69 @@ function toggleNav(){
       });
       c.textContent = pl(tot);
     }
+
+    // Búsqueda inmediata desde cualquier punto del portal privado.
+    // Los resultados se crean con textContent para evitar inyección HTML.
+    var quickBtn = document.getElementById('eq-quick-open');
+    var quickPanel = document.getElementById('eq-quick-panel');
+    var quickClose = document.getElementById('eq-quick-close');
+    var quickInput = document.getElementById('eq-quick-input');
+    var quickResults = document.getElementById('eq-quick-results');
+    var quickStatus = document.getElementById('eq-quick-status');
+    function quickToggle(open) {
+      quickPanel.hidden = !open;
+      quickBtn.setAttribute('aria-expanded', String(open));
+      if (open) quickInput.focus();
+      else quickBtn.focus();
+    }
+    quickBtn.addEventListener('click', function () { quickToggle(quickPanel.hidden); });
+    quickClose.addEventListener('click', function () { quickToggle(false); });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !quickPanel.hidden) quickToggle(false);
+    });
+    function quickSearch() {
+      var term = plano(quickInput.value.trim());
+      quickResults.replaceChildren();
+      if (term.length < 2) {
+        quickStatus.textContent = 'Escribe al menos 2 caracteres para buscar.';
+        return;
+      }
+      var normalizedDoc = quickInput.value.replace(/[\\s.\\-]/g, '');
+      var docQuery = /^\\d+$/.test(normalizedDoc) ? normalizedDoc : '';
+      var matches = est.filter(function (e) {
+        return plano(e.n + ' ' + e.t + ' ' + e.p + ' ' + e.cu + ' ' + e.cp).includes(term) ||
+          (docQuery && String(e.doc).includes(docQuery));
+      });
+      quickStatus.textContent = matches.length
+        ? matches.length + (matches.length === 1 ? ' coincidencia' : ' coincidencias') + ' · mostrando hasta 15'
+        : 'No se encontraron estudiantes.';
+      matches.slice(0, 15).forEach(function (e) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'eq-quick-result';
+        var name = document.createElement('b');
+        name.textContent = titleName(e.n);
+        var detail = document.createElement('small');
+        detail.textContent = cleanProg(e.p.replace(/^\\w+-/, '')) + ' · ' +
+          (e.t ? 'Tutor: ' + titleName(e.t) : 'Pendiente de tutor');
+        b.append(name, detail);
+        b.addEventListener('click', function () {
+          // Mantener el filtro original sincronizado y navegar a la coincidencia exacta.
+          q.value = '';
+          run();
+          var li = cont.querySelector('li[data-i="' + e.i + '"]');
+          if (!li) return;
+          var prog = li.closest('details');
+          if (prog) prog.open = true;
+          cont.querySelectorAll('.eq-found').forEach(function (x) { x.classList.remove('eq-found'); });
+          li.classList.add('eq-found');
+          quickToggle(false);
+          li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        quickResults.appendChild(b);
+      });
+    }
+    quickInput.addEventListener('input', quickSearch);
     if (q) q.addEventListener('input', run);
     var o = document.getElementById('fe-open'), x = document.getElementById('fe-close');
     if (o) o.onclick = function () { progs.forEach(function (p) { if (!p.hidden) p.open = true; }); };
