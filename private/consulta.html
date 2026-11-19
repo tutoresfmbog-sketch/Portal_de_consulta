@@ -1102,6 +1102,9 @@
 #fe-list .fl-pages button{background:#e5f2eb;color:#145d50;border:1px solid #c2dbce;border-radius:8px;padding:7px 12px;cursor:pointer}
 #fe-list .fl-pages button:disabled{opacity:.4}
 @media(max-width:650px){#fe-list .fl-prog ul{grid-template-columns:1fr}}
+#fe-q{flex:1 1 300px;min-width:190px;max-width:650px;padding:12px 15px;border:1px solid #b8d4c9;border-radius:10px;background:#fff;font:15px "Ancizar Sans",Arial,sans-serif;color:#26332f}
+#fe-q:focus{outline:2px solid #15786b;outline-offset:2px}
+#fe-list .fl-prog[hidden],#fe-list .fl-prog li[hidden]{display:none!important}
 /* Especialidades médicas: verde claro, sin afectar Pregrado ni Posgrado */
 #tut-t-esp thead th{
   background:#dff0dc;
@@ -1198,6 +1201,8 @@
   <p class="eq-lead" style="font-size:16px">Busque en un solo lugar a los estudiantes activos, tengan o no tutor asignado. Puede buscar por nombre, tutor, documento o correo electrónico. Despliegue el programa para ver el listado.</p>
   <div class="fl-tools">
    
+    <label for="fe-q">Buscar estudiantes</label>
+    <input id="fe-q" type="search" placeholder="Buscar estudiante, tutor, documento o correo..." autocomplete="off" />
     <button type="button" id="fe-open">Desplegar todo</button>
     <button type="button" id="fe-close">Contraer todo</button>
   </div>
@@ -1993,11 +1998,11 @@ function toggleNav(){
       });
     });
     function run() {
-      var raw = q.value.trim(), t = plano(raw), td = raw.replace(/[\\s.\\-]/g, ''), esNum = /^\\d+$/.test(td), tot = 0;
+      var raw = q.value.trim(), t = plano(raw), td = raw.replace(/[\\s.\\-]/g, ''), esNum = /^\d+$/.test(td), tot = 0;
       progs.forEach(function (p) {
         var found = [];
         [].forEach.call(p.querySelectorAll('li'), function (li) {
-          var porNombre = !t || li.getAttribute('data-n').indexOf(t) > -1;
+          var porNombre = !t || li.getAttribute('data-n').indexOf(t) > -1 || plano(p.querySelector('.fl-pn').textContent).indexOf(t) > -1;
           var porDoc = !!t && esNum && li.getAttribute('data-d').indexOf(td) > -1;
           var porMail = !!t && li.getAttribute('data-c').indexOf(t) > -1;
           var ok = porNombre || porDoc || porMail;
