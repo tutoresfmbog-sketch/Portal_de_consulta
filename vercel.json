@@ -1,1 +1,18 @@
-{"version":2,"rewrites":[{"source":"/app","destination":"/api/page"}],"headers":[{"source":"/app","headers":[{"key":"Cache-Control","value":"private, no-store"}]}]}
+{
+  "version": 2,
+  "functions": {
+    "api/page.js": {
+      "includeFiles": "private/consulta.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/consulta",
+      "destination": "/api/page"
+    },
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    }
+  ]
+}
